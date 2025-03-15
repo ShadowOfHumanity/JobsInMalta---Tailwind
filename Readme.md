@@ -9,7 +9,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/ShadowOfHumanity/JobsForMalta">
+  <a href="https://github.com/ShadowOfHumanity/JobsInMalta---Tailwind">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
@@ -18,14 +18,14 @@
   <p align="center">
     A platform connecting job seekers and employers in Malta. Sign up as an employer or employee. Full-stack application with robust security features.
     <br />
-    <a href="https://github.com/ShadowOfHumanity/JobsForMalta"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/ShadowOfHumanity/JobsInMalta---Tailwind"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/ShadowOfHumanity/JobsForMalta">View Demo</a>
+    <a href="https://github.com/ShadowOfHumanity/JobsInMalta---Tailwind">View Demo</a>
     &middot;
-    <a href="https://github.com/ShadowOfHumanity/JobsForMalta/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    <a href="https://github.com/ShadowOfHumanity/JobsInMalta---Tailwind/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     &middot;
-    <a href="https://github.com/ShadowOfHumanity/JobsForMalta/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+    <a href="https://github.com/ShadowOfHumanity/JobsInMalta---Tailwind/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
   </p>
 </div>
 
@@ -127,12 +127,11 @@ This repository documents my journey in creating JobsForMalta, a platform design
 
 ### Built With
 
-* [![Next.js][Next.js]][Next-url]
 * [![React][React.js]][React-url]
 * [![Node.js][Node.js]][Node-url]
-* [![Express.js][Express.js]][Express-url]
+* [![Express.js][Express-url]]
 * [![PostgreSQL][PostgreSQL]][PostgreSQL-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
+* [![Tailwind CSS][Tailwind-css]][Tailwind-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -152,7 +151,7 @@ To get a local copy of the project up and running, follow these steps.
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/ShadowOfHumanity/JobsForMalta.git
+   git clone https://github.com/ShadowOfHumanity/JobsInMalta---Tailwind.git
    ```
 2. Install backend dependencies
    ```sh
@@ -199,7 +198,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
     - [ ] Secure job postings
     - [ ] Enhanced session management
 
-See the [open issues](https://github.com/ShadowOfHumanity/JobsForMalta/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/ShadowOfHumanity/JobsInMalta---Tailwind/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -218,8 +217,8 @@ Contributions are welcome! If you'd like to make changes to the project, feel fr
 
 ### Top contributors:
 
-<a href="https://github.com/ShadowOfHumanity/JobsForMalta/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=ShadowOfHumanity/JobsForMalta" alt="contrib.rocks image" />
+<a href="https://github.com/ShadowOfHumanity/JobsInMalta---Tailwind/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=ShadowOfHumanity/JobsInMalta---Tailwind" alt="contrib.rocks image" />
 </a>
 
 <!-- LICENSE -->
@@ -234,7 +233,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 Darian Baker Bray - [@ShadowOfHumanity](https://twitter.com/ShadowOfHumanity) - Darianbakerbray@gmail.com
 
-Project Link: [https://github.com/ShadowOfHumanity/JobsForMalta](https://github.com/ShadowOfHumanity/JobsForMalta)
+Project Link: [https://github.com/ShadowOfHumanity/JobsInMalta---Tailwind](https://github.com/ShadowOfHumanity/JobsInMalta---Tailwind)
 LinkedIn: [Darian Baker](https://www.linkedin.com/in/darian-baker-1402b2327/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -250,21 +249,19 @@ LinkedIn: [Darian Baker](https://www.linkedin.com/in/darian-baker-1402b2327/)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/ShadowOfHumanity/JobsInMalta.svg?style=for-the-badge
-[contributors-url]: https://github.com/ShadowOfHumanity/JobsInMalta/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/ShadowOfHumanity/JobsInMalta.svg?style=for-the-badge
-[forks-url]: https://github.com/ShadowOfHumanity/JobsInMalta/network/members
-[stars-shield]: https://img.shields.io/github/stars/ShadowOfHumanity/JobsInMalta.svg?style=for-the-badge
-[stars-url]: https://github.com/ShadowOfHumanity/JobsInMalta/stargazers
-[issues-shield]: https://img.shields.io/github/issues/ShadowOfHumanity/JobsInMalta.svg?style=for-the-badge
-[issues-url]: https://github.com/ShadowOfHumanity/JobsInMalta/issues
+[contributors-shield]: https://img.shields.io/github/contributors/ShadowOfHumanity/JobsInMalta---Tailwind.svg?style=for-the-badge
+[contributors-url]: https://github.com/ShadowOfHumanity/JobsInMalta---Tailwind/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/ShadowOfHumanity/JobsInMalta---Tailwind.svg?style=for-the-badge
+[forks-url]: https://github.com/ShadowOfHumanity/JobsInMalta---Tailwind/network/members
+[stars-shield]: https://img.shields.io/github/stars/ShadowOfHumanity/JobsInMalta---Tailwind.svg?style=for-the-badge
+[stars-url]: https://github.com/ShadowOfHumanity/JobsInMalta---Tailwind/stargazers
+[issues-shield]: https://img.shields.io/github/issues/ShadowOfHumanity/JobsInMalta---Tailwind.svg?style=for-the-badge
+[issues-url]: https://github.com/ShadowOfHumanity/JobsInMalta---Tailwind/issues
 [license-shield]: https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge
-[license-url]: https://github.com/ShadowOfHumanity/JobsInMalta/blob/main/LICENSE
+[license-url]: https://github.com/ShadowOfHumanity/JobsInMalta---Tailwind/blob/main/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/darian-baker-1402b2327/
 [product-screenshot]: images/screenshot.png
-[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
-[Next-url]: https://nextjs.org/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
 [Node.js]: https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white
@@ -273,5 +270,6 @@ LinkedIn: [Darian Baker](https://www.linkedin.com/in/darian-baker-1402b2327/)
 [Express-url]: https://expressjs.com/
 [PostgreSQL]: https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white
 [PostgreSQL-url]: https://www.postgresql.org/
-[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
-[Bootstrap-url]: https://getbootstrap.com
+[Tailwind-css]: https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white
+[Tailwind-url]: https://tailwindcss.com/
+```
