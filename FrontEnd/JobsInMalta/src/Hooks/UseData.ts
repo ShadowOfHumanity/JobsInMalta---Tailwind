@@ -6,22 +6,22 @@ export interface QueryParams {
   [key: string]: string | number | boolean | undefined; // allow any query parameter
 }
 
-interface FetchResponse<T> {
-  count: number;
-  data: T[];
+interface ApiResponse<T> {
   status: string;
+  data?: T;
+  count?: number;
+  message?: string;
+  sortedBy?: string;
 }
 
 const constructEndpoint = (baseEndpoint: string, params?: QueryParams) => {
   if (!params) return baseEndpoint;
 
-
-
   const queryParams = Object.entries(params)
     .filter(([_, value]) => value !== undefined && value !== null)
     .map(([key, value]) => {
       if (value === undefined || value === null) {
-        return ''; // undefined or null values handled avoiding encodeURIComponent calls
+        return ''; 
       }
       return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
     })
@@ -39,7 +39,7 @@ const constructEndpoint = (baseEndpoint: string, params?: QueryParams) => {
     return queryParams ? `${baseEndpoint}?${queryParams}` : baseEndpoint;
 }
 
-const useData = <T>(endpoint: string, queryParams?: QueryParams, deps?: any[], ) => {
+const useData = <T>(endpoint: string, queryParams?: QueryParams, deps?: any[]) => {
   const [data, setData] = useState<T[]>([]);
   const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -50,9 +50,11 @@ const useData = <T>(endpoint: string, queryParams?: QueryParams, deps?: any[], )
     () => {
       const controller = new AbortController();
       setIsLoading(true);
-      ApiClient.get<FetchResponse<T>>(finalEndpoint, { signal: controller.signal })
-      .then((res) => {
-        setData(res.data.data); // Access the data array directly
+      
+      ApiClient.get<ApiResponse<T>>(finalEndpoint, { signal: controller.signal })
+        .then((res) => {
+          // Store the full response object for access
+          setData([res.data as any]);
         })
         .catch((err: AxiosError) => {
           if (err instanceof CanceledError) {

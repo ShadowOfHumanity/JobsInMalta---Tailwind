@@ -1,51 +1,71 @@
-import { SalaryData } from '../types';
+
 import useData, { QueryParams } from './UseData'
 
 export interface JobsData {
-    id: number;
+    job_id: number; 
     title: string;
     company: string;
     description: string;
-    expireDate: string;
-    category: string;
-    SalaryData?: SalaryData;
+    expire_date: string; 
+    category_name: string;
+    salary_type: string;
+    salary_min: number | null;
+    salary_max: number | null;
+    salary_single: number | null;
+    created_at: string;
+    owner_id: number;
 }
 
 export interface JobsQuery {
-    category?: string | null;
-    sortBy?: string | null;
-    id?: number | null;
-    page?: number | null;
-    limit?: number | null;
+    category?: string;
+    sortBy?: 'newest' | 'expiring' | 'oldest';
+    id?: number;
+    page?: number;
+    limit?: number;
 }
 
+export interface JobsResponse {
+    status: string;
+    count: number;
+    data: JobsData[];
+    sortedBy: string;
+}
 
 const useJobs = (params?: JobsQuery, deps?: any[]) => {
-    const { data: jobs, error: jobsError, isLoading: isJobsLoading} = useData<JobsData>(
+    const { data, error, isLoading } = useData<JobsResponse>(
         '/jobs/getJobs',
         params as QueryParams,
         deps
     );
-    console.log(jobs)
-    return { jobs, jobsError, isJobsLoading };
+    
+    // Extract jobs from the response data
+    const jobs = data && data.length > 0 ? data[0]?.data || [] : [];
+    
+    return { 
+        jobs, 
+        jobsCount: data && data.length > 0 ? data[0]?.count : 0,
+        sortedBy: data && data.length > 0 ? data[0]?.sortedBy : null,
+        jobsError: error, 
+        isJobsLoading: isLoading 
+    };
 }
 
-export default useJobs
-
+export default useJobs;
 
 /*
-DOCUMENTATION PURPOSES ONLY
+DOCUMENTATION:
 -> Get all jobs
-const { jobs, jobsError, isJobsLoading } = useJobs();
-http://localhost:3001/jobs
+const { jobs, jobsCount, sortedBy, jobsError, isJobsLoading } = useJobs();
 
--> Get single job by ID
-const { jobs, jobsError, isJobsLoading } = useJobs({ jobID: 123 });
-http://localhost:3001/jobs/123
+-> Get jobs with pagination
+const { jobs, jobsCount, sortedBy, jobsError, isJobsLoading } = useJobs({ page: 1, limit: 10 });
 
 -> Get jobs by category
-const { jobs, jobsError, isJobsLoading } = useJobs({ category: 'frontend' });
-http://localhost:3001/jobs?category=frontend
+const { jobs, jobsCount, sortedBy, jobsError, isJobsLoading } = useJobs({ category: 'frontend' });
 
-Note: When jobID is provided, category will be ignored
+-> Get jobs sorted by expiration
+const { jobs, jobsCount, sortedBy, jobsError, isJobsLoading } = useJobs({ sortBy: 'expiring' });
+
+-> Get single job by ID
+const { jobs, jobsError, isJobsLoading } = useJobs({ id: 123 });
 */
