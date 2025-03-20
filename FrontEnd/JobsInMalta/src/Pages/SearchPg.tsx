@@ -1,5 +1,4 @@
 
-import Navbar from '../Components/Navbar'
 import MidText from '../Components/MidText'
 import LongSearchBar from '../Components/LongSearchBar'
 import JobCards from '../Components/JobCards'
@@ -8,7 +7,6 @@ import WebFooter from '../Components/Footer'
 const SearchPage = () => {
   return (
     <>
-      <Navbar />
       <MidText>Explore opportunities</MidText>
       <LongSearchBar /> {/* includes filters*/}
 
@@ -23,13 +21,10 @@ const SearchPage = () => {
 
       <JobCards
         companyName="European Union"
-        vacancyName="Souldiers"
+        vacancyName="Soldiers"
         vacancyDescription="Here at the EU, we're looking to enhance, and grow our army due to unseen threats. Apply now, and be a prime European Citizen."
         vacancyTags={['Army', 'Benifits', 'Urgent']}
         companyImageUrl={'https://cdn.britannica.com/66/96866-004-F622FD38/Flag-European-Union.jpg?s=1500x700&q=85'} />
-
-
-    <WebFooter />
     </>
   )
 }
