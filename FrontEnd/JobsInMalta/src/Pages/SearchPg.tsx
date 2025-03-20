@@ -2,7 +2,7 @@
 import MidText from '../Components/MidText'
 import LongSearchBar from '../Components/LongSearchBar'
 import JobCards from '../Components/JobCards'
-import WebFooter from '../Components/Footer'
+
 
 const SearchPage = () => {
   return (

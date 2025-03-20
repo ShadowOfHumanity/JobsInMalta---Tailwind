@@ -1,8 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom"
 import { useState, useEffect } from "react"
-import SearchPage from "./Pages/SearchPage";
+import SearchPage from "./Pages/SearchPg";
 import WebFooter from "./Components/Footer";
 import Navbar from "./Components/Navbar";
+import LoginPg from "./Pages/LoginPg";
+import RegisterPg from "./Pages/RegisterPg";
 
 // Layout component that includes the navbar and footer
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -17,12 +19,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-// Page components (You'll need to create these files)
+// Pages
 const HomePage = () => <SearchPage />;
 const JobDetailsPage = () => <div className="container mx-auto px-4 py-8">Job Details Page</div>;
 const PostJobPage = () => <div className="container mx-auto px-4 py-8">Post a Job Page</div>;
-const LoginPage = () => <div className="container mx-auto px-4 py-8">Login Page</div>;
-const RegisterPage = () => <div className="container mx-auto px-4 py-8">Register Page</div>;
+const LoginPage = () => <LoginPg />;
+const RegisterPage = () => <RegisterPg />;
 const EmployerDashboardPage = () => <div className="container mx-auto px-4 py-8">Employer Dashboard</div>;
 const ProfilePage = () => <div className="container mx-auto px-4 py-8">User Profile Page</div>;
 const NotFoundPage = () => (
