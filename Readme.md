@@ -16,7 +16,7 @@
 <h3 align="center">JobsForMalta</h3>
 
   <p align="center">
-    A platform connecting job seekers and employers in Malta. Sign up as an employer or employee. Full-stack application with robust security features.
+    A modern job board platform connecting job seekers and employers in Malta with robust security features and intuitive user experience.
     <br />
     <a href="https://github.com/ShadowOfHumanity/JobsInMalta---Tailwind"><strong>Explore the docs »</strong></a>
     <br />
@@ -36,6 +36,9 @@
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
+        <li><a href="#development-timeline">Development Timeline</a></li>
+        <li><a href="#current-features">Current Features</a></li>
+        <li><a href="#technical-implementation">Technical Implementation</a></li>
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
@@ -62,29 +65,44 @@ This repository documents my journey in creating JobsForMalta, a platform design
 
 ### Development Timeline
 
-#### Week 1 (Feb 11-12, 2025)
-- Created initial project template and structure
+#### Phase 1: Initial Setup (Feb 11-13, 2025)
+- Created project template and structure
 - Implemented barebones backend and frontend logic
-- Set up job management features with hooks
-- Established data sanitization protocols
-
-#### Week 2 (Feb 13-15, 2025)
+- Set up job management features with hooks and data sanitization
 - Implemented category logic and testing
-- Added PostgreSQL database connection
 - Enhanced API with category filtering
-- Developed user model with employer/employee classes
-- Implemented bcrypt password hashing
-- Added email and phone handling
-- Optimized database pool access
+- Added PostgreSQL database connection
 
-#### Week 3 (Feb 16-19, 2025)
-- Fixed critical salary calculation bugs
+#### Phase 2: User Management & Authentication (Feb 14-16, 2025) 
+- Implemented user model with employer/employee classes
+- Added password hashing with bcrypt
+- Added email and phone handling
+- Fixed database errors and major salary calculation bugs
+- Implemented user registration endpoints with validation
+
+#### Phase 3: Session Management & Error Handling (Feb 17-20, 2025)
 - Implemented session control and authentication
 - Enhanced job insertion logic with async handling
 - Added comprehensive error handling
 - Improved validation for job postings
 - Enhanced employer role verification
 - Added company name retrieval system
+- Implemented user editing functionality
+
+#### Phase 4: API Structure & Routes (Feb 22-28, 2025)
+- Separated concerns with Routes and Controllers
+- Fixed AddJob in frontend to include JobPromise
+- Added proper routing for endpoints
+- Added initial UI components
+
+#### Phase 5: UI Development & Refinement (Mar 1-20, 2025)
+- Improved mobile support and search bar filtering
+- Added Tailwind CSS for styling (replaced Bootstrap)
+- Implemented Login page and authentication components
+- Added TitleLogo component and updated dependencies
+- Refactored login and search pages
+- Refactored routing and component imports
+- Implemented new registration pages
 
 ### Current Features
 - User authentication with session management
@@ -128,8 +146,9 @@ This repository documents my journey in creating JobsForMalta, a platform design
 ### Built With
 
 * [![React][React.js]][React-url]
+* [![TypeScript][TypeScript]][TypeScript-url]
 * [![Node.js][Node.js]][Node-url]
-* [![Express.js][Express-url]]
+* [![Express.js][Express-shield]][Express-url]
 * [![PostgreSQL][PostgreSQL]][PostgreSQL-url]
 * [![Tailwind CSS][Tailwind-css]][Tailwind-url]
 
@@ -146,6 +165,8 @@ To get a local copy of the project up and running, follow these steps.
   ```sh
   npm install npm@latest -g
   ```
+* PostgreSQL 14 or later
+* Node.js 18 or later
 
 ### Installation
 
@@ -164,7 +185,23 @@ To get a local copy of the project up and running, follow these steps.
    npm install
    ```
 4. Set up PostgreSQL database and update connection settings
+   ```sh
+   # Create a database named jobsformalta
+   # Update db.js with your PostgreSQL credentials
+   ```
 5. Configure environment variables
+   ```sh
+   # Create .env in BackEnd directory with:
+   DB_HOST=localhost
+   DB_PORT=5432
+   DB_USER=youruser
+   DB_PASSWORD=yourpassword
+   DB_NAME=jobsformalta
+   SESSION_SECRET=your_session_secret
+
+   # Create .env in FrontEnd/JobsInMalta with:
+   VITE_API_URL=http://localhost:3001
+   ```
 6. Start the backend server
    ```sh
    cd ../../BackEnd
@@ -181,7 +218,21 @@ To get a local copy of the project up and running, follow these steps.
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-This project is a full-stack application where both employers and employees can sign up and interact with the platform. Employers can post job listings, while job seekers can apply. The platform is secured with various features to ensure the safety and integrity of user data.
+This project is a full-stack application where both employers and employees can sign up and interact with the platform. The platform offers:
+
+### For Employers
+- Register and create a company profile
+- Post job listings with detailed descriptions and requirements
+- Filter and manage applicants
+- Edit and update job listings
+
+### For Job Seekers
+- Create a personal profile with professional details
+- Browse available jobs with advanced filtering
+- Apply to positions directly through the platform
+- Track application status
+
+The platform is secured with various features to ensure the safety and integrity of user data, including input sanitization, secure session management, and password hashing.
 
 _For more examples, please refer to the [Documentation](https://example.com)_
 
@@ -190,13 +241,26 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <!-- ROADMAP -->
 ## Roadmap
 
+### Completed
 - [x] User authentication (Sign up / Sign in) with Sessions
-- [ ] Job listing and job search functionality
+- [x] Modern UI with Tailwind CSS
+- [x] Dark/Light mode support
+- [x] Job search with filters
+- [x] Mobile-responsive design
+
+### In Progress
+- [ ] Job applications system
 - [ ] Employer dashboard
-- [ ] Employee job application feature
+- [ ] User profile management
 - [ ] Advanced security features
     - [ ] Secure job postings
     - [ ] Enhanced session management
+
+### Upcoming
+- [ ] Email notifications
+- [ ] Recommendation system
+- [ ] Analytics dashboard
+- [ ] Resume builder for job seekers
 
 See the [open issues](https://github.com/ShadowOfHumanity/JobsInMalta---Tailwind/issues) for a full list of proposed features (and known issues).
 
@@ -234,6 +298,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 Darian Baker Bray - [@ShadowOfHumanity](https://twitter.com/ShadowOfHumanity) - Darianbakerbray@gmail.com
 
 Project Link: [https://github.com/ShadowOfHumanity/JobsInMalta---Tailwind](https://github.com/ShadowOfHumanity/JobsInMalta---Tailwind)
+
 LinkedIn: [Darian Baker](https://www.linkedin.com/in/darian-baker-1402b2327/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -241,6 +306,10 @@ LinkedIn: [Darian Baker](https://www.linkedin.com/in/darian-baker-1402b2327/)
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
+* [React Icons](https://react-icons.github.io/react-icons/)
+* [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+* [Express.js Documentation](https://expressjs.com/)
+* [PostgreSQL Documentation](https://www.postgresql.org/docs/)
 * [Choose an Open Source License](https://choosealicense.com)
 * [GitHub Pages](https://pages.github.com)
 * [Font Awesome](https://fontawesome.com)
@@ -257,7 +326,7 @@ LinkedIn: [Darian Baker](https://www.linkedin.com/in/darian-baker-1402b2327/)
 [stars-url]: https://github.com/ShadowOfHumanity/JobsInMalta---Tailwind/stargazers
 [issues-shield]: https://img.shields.io/github/issues/ShadowOfHumanity/JobsInMalta---Tailwind.svg?style=for-the-badge
 [issues-url]: https://github.com/ShadowOfHumanity/JobsInMalta---Tailwind/issues
-[license-shield]: https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/ShadowOfHumanity/JobsInMalta---Tailwind.svg?style=for-the-badge
 [license-url]: https://github.com/ShadowOfHumanity/JobsInMalta---Tailwind/blob/main/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/darian-baker-1402b2327/
@@ -266,10 +335,11 @@ LinkedIn: [Darian Baker](https://www.linkedin.com/in/darian-baker-1402b2327/)
 [React-url]: https://reactjs.org/
 [Node.js]: https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white
 [Node-url]: https://nodejs.org/
-[Express.js]: https://img.shields.io/badge/Express.js-404D59?style=for-the-badge
+[Express-shield]: https://img.shields.io/badge/Express.js-404D59?style=for-the-badge
 [Express-url]: https://expressjs.com/
 [PostgreSQL]: https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white
 [PostgreSQL-url]: https://www.postgresql.org/
 [Tailwind-css]: https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white
 [Tailwind-url]: https://tailwindcss.com/
-```
+[TypeScript]: https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white
+[TypeScript-url]: https://www.typescriptlang.org/
