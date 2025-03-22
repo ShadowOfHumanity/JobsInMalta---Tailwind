@@ -10,8 +10,22 @@ interface AuthFormProps {
     type: 'login' | 'register'
 }
 
+// Country code options
+interface CountryCode {
+  code: string;
+}
+
+const countryCodes: CountryCode[] = [
+  { code: "+356" },
+  { code: "+44" },
+  { code: "+49" },
+  { code: "+1" },
+  { code: "+39" },
+];
+
 const AuthForm = ({type}: AuthFormProps) => {
   const [userType, setUserType] = useState<'employee' | 'employer'>('employee');
+  const [selectedCountryCode, setSelectedCountryCode] = useState<string>("+356");
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -28,9 +42,8 @@ const AuthForm = ({type}: AuthFormProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", { ...formData, userType, formType: type });
-    // Here you would integrate with your authentication logic
-  };
+    //submit 
+  }
 
   return (
     <form onSubmit={handleSubmit} className="p-6">
@@ -110,17 +123,30 @@ const AuthForm = ({type}: AuthFormProps) => {
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Phone Number
             </label>
-            <div className="relative">
-              <FaPhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
-              <input 
-                type="tel"
-                name="contact_phone"
-                value={formData.contact_phone}
-                onChange={handleChange}
-                placeholder="+356 1234 5678" 
-                className="w-full pl-10 pr-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white" 
-                required
-              />
+            <div className="flex gap-2">
+              <select 
+                value={selectedCountryCode}
+                onChange={(e) => setSelectedCountryCode(e.target.value)}
+                className="pl-3 pr-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              >
+                {countryCodes.map((country) => (
+                  <option key={country.code} value={country.code}>
+                     {country.code}
+                  </option>
+                ))}
+              </select>
+              <div className="relative flex-grow">
+                <FaPhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
+                <input 
+                  type="tel"
+                  name="contact_phone"
+                  value={formData.contact_phone}
+                  onChange={handleChange}
+                  placeholder="1234 5678" 
+                  className="w-full pl-10 pr-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white" 
+                  required
+                />
+              </div>
             </div>
           </div>
         </>
@@ -149,17 +175,30 @@ const AuthForm = ({type}: AuthFormProps) => {
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Phone Number
             </label>
-            <div className="relative">
-              <FaPhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
-              <input 
-                type="tel"
-                name="contact_phone"
-                value={formData.contact_phone}
-                onChange={handleChange}
-                placeholder="+356 1234 5678" 
-                className="w-full pl-10 pr-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white" 
-                required
-              />
+            <div className="flex gap-2">
+              <select 
+                value={selectedCountryCode}
+                onChange={(e) => setSelectedCountryCode(e.target.value)}
+                className="pl-3 pr-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              >
+                {countryCodes.map((country) => (
+                  <option key={country.code} value={country.code}>
+                    {country.code}
+                  </option>
+                ))}
+              </select>
+              <div className="relative flex-grow">
+                <FaPhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
+                <input 
+                  type="tel"
+                  name="contact_phone"
+                  value={formData.contact_phone}
+                  onChange={handleChange}
+                  placeholder="1234 5678" 
+                  className="w-full pl-10 pr-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white" 
+                  required
+                />
+              </div>
             </div>
           </div>
         </>
