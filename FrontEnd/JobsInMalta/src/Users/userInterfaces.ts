@@ -22,6 +22,7 @@ export interface EmployeeCreateRequest extends BaseUser {
   experience_Years?: number; 
   education_level?: string;
   portfolio_url?: string;
+  country_code: string;
   contact_phone: string; 
 }
 

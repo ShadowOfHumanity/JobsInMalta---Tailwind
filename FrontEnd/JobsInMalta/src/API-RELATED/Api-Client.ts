@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 
 // Get the base URL from environment variables if available, otherwise use default
+axios.defaults.withCredentials = true;
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
 // Create an axios instance with custom configuration

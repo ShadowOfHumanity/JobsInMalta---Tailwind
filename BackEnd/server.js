@@ -18,9 +18,10 @@ const port = 3001;
 // CORS configuration
 app.use(
   cors({
-    origin: "http://localhost:5173", ///////////// <--- CHANGE THIS TO YOUR DOMAIN
+    origin: "http://localhost:5173", ///////////// <--- CHANGE THIS TO DOMAIN
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true
   })
 );
 
@@ -28,7 +29,7 @@ app.use(express.json()); // turns incoming to json
 
 app.use(
   session({
-    secret: "BmEkM%Dj`tcyT_q^)Q#N;pU?5yeavqX{2Z:{JKF{",
+    secret: "BmEkM%Dj`tcyT_q^)Q#N;pU?5yeavqX{2Z:{JKF{", // NOTE TO SELF, CHANGE THE SECRET
     resave: false,
     saveUninitialized: false,
     cookie: {
