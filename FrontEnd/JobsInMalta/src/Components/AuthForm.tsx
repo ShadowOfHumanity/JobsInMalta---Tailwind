@@ -67,7 +67,8 @@ const AuthForm = ({ type }: AuthFormProps) => {
       const result = await addEmployeeSubmit(employeeData);
 
       if (result) {
-        console.log(employeeData);
+        // TODO: Redirect to dashboard
+        // TODO: SHOW SUCCESS AND ERROR MESSAGES, LOADING SPINNER FOR IS ADDEMPLOYEELOADING
       }
     }
 
