@@ -6,6 +6,7 @@ import { HiMail } from "react-icons/hi";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaUser, FaBuilding, FaPhone } from "react-icons/fa";
 import AddEmployee from "../Hooks/AddEmployee";
+import { useNavigate } from "react-router-dom";
 
 interface AuthFormProps {
   type: "login" | "register";
@@ -25,8 +26,9 @@ const countryCodes: CountryCode[] = [
 ];
 
 const AuthForm = ({ type }: AuthFormProps) => {
-  const {handleSubmit: addEmployeeSubmit, employeeData, addEmployeeErrors, isAddEmployeeLoading } = AddEmployee();
+  const {handleSubmit: addEmployeeSubmit, addEmployeeErrors } = AddEmployee();
   const [userType, setUserType] = useState<"employee" | "employer">("employee");
+  const [emailValidation, setEmailValidation] = useState<boolean | null>(null);
   const [selectedCountryCode, setSelectedCountryCode] =
     useState<string>("+356");
   const [formData, setFormData] = useState({
@@ -37,6 +39,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
     company_name: "",
     contact_phone: "",
   });
+  let navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -54,6 +57,8 @@ const AuthForm = ({ type }: AuthFormProps) => {
     user type is equal to userType
     */
     console.log(formData, selectedCountryCode, userType);
+    setEmailValidation(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
+    if (!emailValidation) return
     if (userType === "employee") {
       // now we have to turn the Data into EmployeeCreateRequest
       let employeeData = {
@@ -65,14 +70,15 @@ const AuthForm = ({ type }: AuthFormProps) => {
         country_code: selectedCountryCode,
       };
       const result = await addEmployeeSubmit(employeeData);
-
-      if (result) {
-        // TODO: Redirect to dashboard
-        // TODO: SHOW SUCCESS AND ERROR MESSAGES, LOADING SPINNER FOR IS ADDEMPLOYEELOADING
+      
+      if (result?.success) {
+        
+        navigate("/");
       }
     }
 
   };
+
 
   return (
     <form onSubmit={handleSubmit} className="p-6">
@@ -250,6 +256,9 @@ const AuthForm = ({ type }: AuthFormProps) => {
             required
           />
         </div>
+        {(emailValidation === false) && 
+          <p className="text-red-500 text-sm">Invalid email format. Please enter a valid email.</p>
+        }
       </div>
 
       {/* Password field for both login and register */}
@@ -269,7 +278,11 @@ const AuthForm = ({ type }: AuthFormProps) => {
             required
           />
         </div>
+        {(addEmployeeErrors && addEmployeeErrors[0] === "password") && 
+          <p className="text-red-500 text-sm">{addEmployeeErrors[1]}</p>
+        }
       </div>
+     
 
       {/* Remember me and forgot password (login only) */}
       {type === "login" && (

@@ -1,5 +1,5 @@
-
-const { sanitizeString, sanitizeCode } = require("../Extras/Sanitizers");
+const dns = require('dns');
+const { sanitizeString, sanitizeCode, sanitizePassword } = require("../Extras/Sanitizers");
 const { Employer, Employee } = require("../Classes/User");
 const {
   validateEmployer,
@@ -99,7 +99,7 @@ const registerEmployer =  async (req, res) => {
 
     const newEmployer = new Employer(
       req.body.email.toLowerCase(),
-      req.body.password,
+      sanitizePassword(req.body.password),
       sanitizeString(req.body.company_name),
       sanitizeString(req.body.contact_phone),
       sanitizeString(req.body.company_description) // if it exists, it will have a change to be a null too.
@@ -159,6 +159,16 @@ const registerEmployee = async (req, res) => {
         errors: [`Missing required fields: ${missingFields.join(", ")}`],
       });
     }
+
+    let passwordResult = sanitizePassword(req.body.password);
+    if (passwordResult){
+      return res.status(400).json({
+        status: "error",
+        errors: ["password", passwordResult],
+      });
+    }
+
+    
 
     const newEmployee = new Employee(
       req.body.email.toLowerCase(), // validate email instead of sanitize
