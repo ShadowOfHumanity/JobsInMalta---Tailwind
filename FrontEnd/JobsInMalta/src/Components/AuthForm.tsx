@@ -67,8 +67,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
       const result = await addEmployeeSubmit(employeeData);
 
       if (result) {
-        console.log("Employee created successfully");
-        console.log(result)
+        console.log(employeeData);
       }
     }
 

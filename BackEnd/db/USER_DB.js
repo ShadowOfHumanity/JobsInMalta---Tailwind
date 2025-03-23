@@ -99,8 +99,8 @@ async function insertEmployee(newEmployee) {
         const employeeResult = await client.query(
             `INSERT INTO employees 
              (user_id, first_name, last_name, professional_title, 
-              bio, skills, experience_years, education_level, portfolio_url, contact_phone)
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+              bio, skills, experience_years, education_level, portfolio_url, contact_phone, country_code)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
              RETURNING employee_id`,
             [
                 userResult.userId,
@@ -112,7 +112,8 @@ async function insertEmployee(newEmployee) {
                 newEmployee.experience_years,
                 newEmployee.education_level,
                 newEmployee.portfolio_url,
-                newEmployee.contact_phone
+                newEmployee.contact_phone,
+                newEmployee.country_code
             ]
         );
 

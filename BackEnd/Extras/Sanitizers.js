@@ -1,3 +1,5 @@
+let availableCodes = [356, 44, 49, 1, 39]
+
 function sanitizeString(str) { 
     // this function is used to sanitize strings and help security 
     // of the app
@@ -11,4 +13,20 @@ function sanitizeString(str) {
     return str;
 }
 
+function sanitizeCode(code) {
+    if (code) {
+        let newCode = code.substring(1, code.length);
+       
+        newCode = parseInt(newCode);
+        for (let i = 0; i < availableCodes.length; i++) {
+            if (newCode === availableCodes[i]) {
+                return code;
+            }
+        }
+    }
+    return null; // erorr case
+}
+
 module.exports.sanitizeString = sanitizeString;
+
+module.exports.sanitizeCode = sanitizeCode;

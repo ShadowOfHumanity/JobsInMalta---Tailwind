@@ -1,22 +1,20 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 
-// Get the base URL from environment variables if available, otherwise use default
+// Get the base URL from EV if available, otherwise use default
 axios.defaults.withCredentials = true;
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
-// Create an axios instance with custom configuration
 const ApiClient = axios.create({
     baseURL: API_BASE_URL,
     headers: {
         'Content-Type': 'application/json'
     },
-    // Enable sending cookies for cross-site requests
     withCredentials: true,
     // Timeout after 30 seconds
     timeout: 30000
 });
 
-// Response interceptor for global error handling
+// Response for error handling
 ApiClient.interceptors.response.use(
     (response: AxiosResponse) => {
         return response;

@@ -7,6 +7,7 @@ interface BaseUser {
 export interface EmployerCreateRequest extends BaseUser {
   company_name: string;
   contact_phone: string;
+  country_code: string;
   company_description?: string;
   industry?: string;
   website_url?: string;
@@ -22,8 +23,8 @@ export interface EmployeeCreateRequest extends BaseUser {
   experience_Years?: number; 
   education_level?: string;
   portfolio_url?: string;
-  country_code: string;
   contact_phone: string; 
+  country_code: string;
 }
 
 // Response interfaces

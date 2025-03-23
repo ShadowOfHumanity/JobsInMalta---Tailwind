@@ -15,10 +15,11 @@ class User {
 }
 
 class Employer extends User {
-  constructor(email, password, company_name, contact_phone, company_description) {
+  constructor(email, password, company_name, contact_phone, company_description, country_code) {
     super(email, password, "employer");
     this.company_name = company_name;
     this.contact_phone = contact_phone;
+    this.country_code = country_code
     this.company_description = company_description || null;
   }
 
@@ -39,12 +40,14 @@ class Employee extends User {
     experience_years,
     education_level,
     portfolio_url,
-    contact_phone
+    contact_phone,
+    country_code
   ) {
     super(email, password, "employee");
     this.first_name = first_name;
     this.last_name = last_name;
     this.contact_phone = contact_phone;
+    this.country_code = country_code;
     this.professional_title = professional_title || null;
     this.bio = bio || null;
     this.skills = skills || null;

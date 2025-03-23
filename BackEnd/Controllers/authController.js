@@ -1,5 +1,5 @@
 
-const { sanitizeString } = require("../Extras/Sanitizers");
+const { sanitizeString, sanitizeCode } = require("../Extras/Sanitizers");
 const { Employer, Employee } = require("../Classes/User");
 const {
   validateEmployer,
@@ -149,6 +149,7 @@ const registerEmployee = async (req, res) => {
       "first_name",
       "last_name",
       "contact_phone",
+      "country_code",
     ];
     const missingFields = requiredFields.filter((field) => !req.body[field]);
 
@@ -170,7 +171,8 @@ const registerEmployee = async (req, res) => {
       parseInt(req.body.experience_Years),
       sanitizeString(req.body.education_level),
       req.body.portfolio_url,
-      parseInt(req.body.contact_phone)
+      parseInt(req.body.contact_phone),
+      sanitizeCode(req.body.country_code)
     );
 
     const validation = validateEmployee(newEmployee);
@@ -180,7 +182,6 @@ const registerEmployee = async (req, res) => {
         errors: validation.errors,
       });
     }
-
     const employeeResult = await insertEmployee(newEmployee);
     if (!employeeResult.success) {
       console.error("Database error:", employeeResult.error);
