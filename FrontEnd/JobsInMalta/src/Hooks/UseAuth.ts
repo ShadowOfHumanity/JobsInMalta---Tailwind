@@ -1,4 +1,5 @@
 import { useState } from "react";
+import globals from "./GlobalStates";
 import ApiClient from "../API-RELATED/Api-Client";
 
 export interface LoginRequest {
@@ -30,6 +31,7 @@ export const useAuth = () => {
       
       if (response.data.success && response.data.data) {
         setUser(response.data.data);
+        globals.setLoggedIn("loggedIn", true);
         return true;
       } else {
         setError(response.data.message || 'Login failed');
@@ -48,6 +50,7 @@ export const useAuth = () => {
     try {
       await ApiClient.post('/auth/logout');
       setUser(null);
+      globals.setLoggedIn("loggedIn", false);
       return true;
     } catch (err) {
       console.error('Logout error:', err);

@@ -6,7 +6,6 @@ import { HiMail } from "react-icons/hi";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaUser, FaBuilding, FaPhone } from "react-icons/fa";
 import AddEmployee from "../Hooks/AddEmployee";
-import globals from "../Hooks/GlobalStates";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Hooks/UseAuth";
 
@@ -70,7 +69,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
       const result = await addEmployeeSubmit(employeeData);
       
       if (result?.success) {
-        globals.setLoggedIn("loggedIn", true)
+        login({email: formData.email, password: formData.password})
         navigate("/");
       }
     } else if (userType === "employer" && type === "register") {
@@ -83,8 +82,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
       console.log(result)
       console.log(loginError)
       if (result) {
-        console.log(result)
-        globals.setLoggedIn("loggedIn", true)
+        login({email: formData.email, password: formData.password})
         navigate("/")
         // TODO: CHANGE THE GLOBAL LOGGED IN STATE
       }
