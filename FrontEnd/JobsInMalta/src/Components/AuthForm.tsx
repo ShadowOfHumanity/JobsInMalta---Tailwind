@@ -70,7 +70,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
       const result = await addEmployeeSubmit(employeeData);
       
       if (result?.success) {
-        
+        globals.setLoggedIn("loggedIn", true)
         navigate("/");
       }
     } else if (userType === "employer" && type === "register") {
@@ -80,7 +80,10 @@ const AuthForm = ({ type }: AuthFormProps) => {
         email: formData.email, 
         password: formData.password 
       })
+      console.log(result)
+      console.log(loginError)
       if (result) {
+        console.log(result)
         globals.setLoggedIn("loggedIn", true)
         navigate("/")
         // TODO: CHANGE THE GLOBAL LOGGED IN STATE
@@ -288,7 +291,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
           />
         </div>
         {(addEmployeeErrors && addEmployeeErrors[0] === "password"  ||  loginError) && 
-          <p className="text-red-500 text-sm">{ addEmployeeErrors ? addEmployeeErrors[1] : loginError}</p>
+          <p className="text-red-500 text-sm">{ loginError ? loginError : addEmployeeErrors[1] }</p>
         }
       </div>
      
