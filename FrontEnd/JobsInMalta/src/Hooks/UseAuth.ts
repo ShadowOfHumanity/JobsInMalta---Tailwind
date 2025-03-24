@@ -4,7 +4,7 @@ import ApiClient from "../API-RELATED/Api-Client";
 export interface LoginRequest {
   email: string;
   password: string;
-  role: 'employer' | 'employee';
+  // Removed role field as it will be determined on the backend
 }
 
 export interface LoginResponse {

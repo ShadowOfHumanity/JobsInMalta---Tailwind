@@ -6,7 +6,9 @@ import { HiMail } from "react-icons/hi";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaUser, FaBuilding, FaPhone } from "react-icons/fa";
 import AddEmployee from "../Hooks/AddEmployee";
+import globals from "../Hooks/GlobalStates";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../Hooks/UseAuth";
 
 interface AuthFormProps {
   type: "login" | "register";
@@ -27,6 +29,10 @@ const countryCodes: CountryCode[] = [
 
 const AuthForm = ({ type }: AuthFormProps) => {
   const {handleSubmit: addEmployeeSubmit, addEmployeeErrors } = AddEmployee();
+  const { error: loginError , login } = useAuth()
+  
+  
+
   const [userType, setUserType] = useState<"employee" | "employer">("employee");
   const [emailValidation, setEmailValidation] = useState<boolean | null>(null);
   const [selectedCountryCode, setSelectedCountryCode] =
@@ -48,18 +54,10 @@ const AuthForm = ({ type }: AuthFormProps) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // form data is equal to
-    /* 
-    {
-      email, contact_phone, password, first_name, last_name, (company_name (only if employer)),
-    }
-    country code is equal to selectedCountryCode
-    user type is equal to userType
-    */
     console.log(formData, selectedCountryCode, userType);
     setEmailValidation(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
     if (!emailValidation) return
-    if (userType === "employee") {
+    if (userType === "employee" && type === "register") {
       // now we have to turn the Data into EmployeeCreateRequest
       let employeeData = {
         email: formData.email,
@@ -75,14 +73,25 @@ const AuthForm = ({ type }: AuthFormProps) => {
         
         navigate("/");
       }
-    }
+    } else if (userType === "employer" && type === "register") {
 
+    } else if (type === "login") {
+      let result = await login({
+        email: formData.email, 
+        password: formData.password 
+      })
+      if (result) {
+        globals.setLoggedIn("loggedIn", true)
+        navigate("/")
+        // TODO: CHANGE THE GLOBAL LOGGED IN STATE
+      }
+    }
   };
 
 
   return (
     <form onSubmit={handleSubmit} className="p-6">
-      {/* User type selection for registration */}
+      {/* User type selection for registration only */}
       {type === "register" && (
         <div className="mb-6">
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -256,7 +265,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
             required
           />
         </div>
-        {(emailValidation === false) && 
+        {(emailValidation === false ) && 
           <p className="text-red-500 text-sm">Invalid email format. Please enter a valid email.</p>
         }
       </div>
@@ -278,8 +287,8 @@ const AuthForm = ({ type }: AuthFormProps) => {
             required
           />
         </div>
-        {(addEmployeeErrors && addEmployeeErrors[0] === "password") && 
-          <p className="text-red-500 text-sm">{addEmployeeErrors[1]}</p>
+        {(addEmployeeErrors && addEmployeeErrors[0] === "password"  ||  loginError) && 
+          <p className="text-red-500 text-sm">{ addEmployeeErrors ? addEmployeeErrors[1] : loginError}</p>
         }
       </div>
      

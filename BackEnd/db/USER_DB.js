@@ -136,36 +136,38 @@ async function insertEmployee(newEmployee) {
     }
 }
 
-async function LogInUser(email, password, role){
+async function LogInUser(email, password){
     const client = await pool.connect();
     try{
+        // first get user without checking role
         const result = await client.query(
-            `SELECT user_id, password_hash FROM users WHERE email = $1 AND role = $2;`,
-            [email, role] // Pass parameters correctly
+            `SELECT user_id, password_hash, role FROM users WHERE email = $1;`,
+            [email]
           );
 
-          if (result.rows.length > 0 ){
-            const storedPasswordHash = result.rows[0].password_hash
+        if (result.rows.length > 0 ){
+            const storedPasswordHash = result.rows[0].password_hash;
+            const userRole = result.rows[0].role; // Get  role from  database
 
-            const match = await bcrypt.compare(password, storedPasswordHash)
+            const match = await bcrypt.compare(password, storedPasswordHash);
 
             if (match){
                 return{
                     success: true,
                     user_id: result.rows[0].user_id,
-                    user_role: role
-                }
+                    user_role: userRole // Return role from database
+                };
             } else {
                 return { success: false, message: "Incorrect password." };
             }
-          }  else {
-            return { success: false, message: "User doesnt exist or incorrect credentials." };
-          }
+        } else {
+            return { success: false, message: "User doesn't exist or incorrect credentials." };
+        }
     } catch (error) {
-        console.error("Error fetching user:", error); // Log the error
-        return {success: false, errors: error}
+        console.error("Error fetching user:", error);
+        return {success: false, errors: error};
     } finally{
-        client.release()
+        client.release();
     }
 }
 
@@ -184,7 +186,7 @@ async function userExists(user_id){
         }
 
     } catch (error) {
-        console.error("Error fetching user:", error); // Log the error
+        console.error("Error fetching user:", error); //  error
         return {success: false}
     }
 }
@@ -206,7 +208,7 @@ async function getCompanyNameById(user_id){
             return { success: false, message: "Employer doesnt exist." };
           }
     } catch (error) {
-        console.error("Error fetching company name:", error); // Log the error
+        console.error("Error fetching company name:", error); // Log error
         return {success: false, errors: error}
     } finally{
         client.release()

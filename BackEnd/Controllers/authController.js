@@ -19,28 +19,19 @@ const login = async (req, res) => {
     });
   }
 
-  const { email, password, role } = req.body;
+  const { email, password } = req.body;
 
-  let EmailValidation = email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); // THIS IS REGEX TO CHECK EMAIL IS VALID
-  let roleResult = role && (role === "employer" || role === "employee");
-  if (!(EmailValidation && roleResult)) {
-    if (!EmailValidation) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid email format.",
-      });
-    } else if (!roleResult) {
-      return res.status(400).json({
-        success: false,
-        message: `Invalid role "${role}". Role must be "employer" or "employee".`,
-      });
-    }
+  let EmailValidation = email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  if (!EmailValidation) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid email format.",
+    });
   }
 
   const { success, user_id, user_role, message, errors } = await LogInUser(
     email,
-    password,
-    role
+    password
   );
 
   if (!success) {
