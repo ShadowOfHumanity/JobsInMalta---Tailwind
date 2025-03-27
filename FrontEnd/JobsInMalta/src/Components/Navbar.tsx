@@ -1,32 +1,22 @@
 import { FaBriefcase, FaSun, FaMoon } from "react-icons/fa";
 
-import { useAuth } from "../Hooks/UseAuth";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuthSession } from "../Hooks/AuthContext";
 import GeneralSpinner from "./GeneralSpinner";
+import ProfileCircle from "./ProfileCircle";
 
 const Navbar = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const {isLoggedIn, isLoading} = useAuthSession();
 
-  const { logout } = useAuth();
-  let navigate = useNavigate();
 
   const toggleDarkMode = () => {
     setIsDark(!isDark);
     document.documentElement.classList.toggle('dark');
   };
   
-  const handleLogout = async () => {
-    const logoutResult = await logout();
-    if (logoutResult) {
-      navigate("/login");
-    } else {
-      console.error("Error logging out");
-    }
-  }
 
   const navItems = [
     { name: "Home", path: "/" },
@@ -55,13 +45,8 @@ const Navbar = () => {
               {isDark ? <FaSun className="text-yellow-300" /> : <FaMoon className="text-gray-200" />}
             </button>
                 {/* Condition to render link or button by global state login status */}
-            {isLoggedIn ? (
-              <button 
-                onClick={handleLogout}
-                className="bg-white text-primary hover:text-primary-dark px-8 py-3 rounded-full font-semibold transition-all duration-300 hover:shadow-glow"
-              >
-                {isLoading ?  <GeneralSpinner /> : "Sign out"}
-              </button>
+            {isLoggedIn ? ( isLoading ?  <GeneralSpinner /> :
+              <ProfileCircle toggleDarkMode={toggleDarkMode} isDark={isDark} /> 
             ) : (
               <Link 
                 to="/login" 
