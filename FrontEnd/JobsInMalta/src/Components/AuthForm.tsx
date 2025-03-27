@@ -8,6 +8,7 @@ import { FaUser, FaBuilding, FaPhone } from "react-icons/fa";
 import AddEmployee from "../Hooks/AddEmployee";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Hooks/UseAuth";
+import { useAuthSession } from "../Hooks/AuthContext";
 
 interface AuthFormProps {
   type: "login" | "register";
@@ -29,6 +30,7 @@ const countryCodes: CountryCode[] = [
 const AuthForm = ({ type }: AuthFormProps) => {
   const {handleSubmit: addEmployeeSubmit, addEmployeeErrors } = AddEmployee();
   const { error: loginError , login } = useAuth()
+  const { user } = useAuthSession();
   
   
 
@@ -76,7 +78,11 @@ const AuthForm = ({ type }: AuthFormProps) => {
         // login after registration
         const loginResult = await login({email: formData.email, password: formData.password});
         if (loginResult) {
+          if (user?.user_role === "employee") {
           navigate("/");
+          } else { 
+            navigate("/post-job");
+          }
         }
       }
     } else if (userType === "employer" && type === "register") {
