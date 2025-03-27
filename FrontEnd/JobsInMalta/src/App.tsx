@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom"
-import { useState, useEffect } from "react"
 import SearchPage from "./Pages/SearchPg";
 import WebFooter from "./Components/Footer";
 import Navbar from "./Components/Navbar";
 import LoginPg from "./Pages/LoginPg";
 import RegisterPg from "./Pages/RegisterPg";
+import { AuthProvider, useAuthSession } from "./Hooks/AuthContext";
 
 // Layout component that includes the navbar and footer
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -37,88 +37,70 @@ const NotFoundPage = () => (
   </div>
 );
 
+// Protected route wrapper component that uses the auth context
+const ProtectedRoute = ({ children, requiredRole = null }: { children: React.ReactNode, requiredRole?: string | null }) => {
+  const { isLoggedIn, user, isLoading } = useAuthSession();
+  
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  
+  if (!isLoggedIn) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (requiredRole && user?.user_role !== requiredRole) {
+    return <Navigate to="/" replace />;
+  }
+
+  return <>{children}</>;
+};
+
 const App = () => {
-  // Simple auth state (in a real app, this would come from your auth context/provider)
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [userRole, setUserRole] = useState<string | null>(null);
-
-  // Check authentication status on load (simulated)
-  useEffect(() => {
-    // This would be a real auth check in production
-    const checkAuth = async () => {
-      try {
-        // Simulate an API call to check auth status
-        const storedUser = localStorage.getItem('user');
-        if (storedUser) {
-          const user = JSON.parse(storedUser);
-          setIsAuthenticated(true);
-          setUserRole(user.role);
-        }
-      } catch (error) {
-        console.error('Auth check failed:', error);
-        setIsAuthenticated(false);
-        setUserRole(null);
-      }
-    };
-
-    checkAuth();
-  }, []);
-
-  // Protected route wrapper component
-  const ProtectedRoute = ({ children, requiredRole = null }: { children: React.ReactNode, requiredRole?: string | null }) => {
-    if (!isAuthenticated) {
-      return <Navigate to="/login" replace />;
-    }
-
-    if (requiredRole && userRole !== requiredRole) {
-      return <Navigate to="/" replace />;
-    }
-
-    return <>{children}</>;
-  };
-
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Public routes */}
-        <Route path="/" element={<Layout><HomePage /></Layout>} />
-        <Route path="/jobs" element={<Layout><HomePage /></Layout>} />
-        <Route path="/jobs/:id" element={<Layout><JobDetailsPage /></Layout>} />
-        <Route path="/login" element={<Layout><LoginPage /></Layout>} />
-        <Route path="/register" element={<Layout><RegisterPage /></Layout>} />
-        <Route path="/employers" element={<Layout><div>Employers Page</div></Layout>} />
-        <Route path="/find-talent" element={<Layout><div>Find Talent Page</div></Layout>} />
-        <Route path="/faq" element={<Layout><div>FAQ Page</div></Layout>} />
-        <Route path="/privacy-policy" element={<Layout><div>Privacy Policy Page</div></Layout>} />
-        <Route path="/terms" element={<Layout><div>Terms of Service Page</div></Layout>} />
-        
-        {/* Protected routes */}
-        <Route path="/post-job" element={
-          <Layout>
-            <ProtectedRoute requiredRole="employer">
-              <PostJobPage />
-            </ProtectedRoute>
-          </Layout>
-        } />
-        <Route path="/dashboard" element={
-          <Layout>
-            <ProtectedRoute requiredRole="employer">
-              <EmployerDashboardPage />
-            </ProtectedRoute>
-          </Layout>
-        } />
-        <Route path="/profile" element={
-          <Layout>
-            <ProtectedRoute>
-              <ProfilePage />
-            </ProtectedRoute>
-          </Layout>
-        } />
-        
-        {/* 404 route */}
-        <Route path="*" element={<Layout><NotFoundPage /></Layout>} />
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* Public routes */}
+          <Route path="/" element={<Layout><HomePage /></Layout>} />
+          <Route path="/jobs" element={<Layout><HomePage /></Layout>} />
+          <Route path="/jobs/:id" element={<Layout><JobDetailsPage /></Layout>} />
+          <Route path="/login" element={<Layout><LoginPage /></Layout>} />
+          <Route path="/register" element={<Layout><RegisterPage /></Layout>} />
+          <Route path="/employers" element={<Layout><div>Employers Page</div></Layout>} />
+          <Route path="/find-talent" element={<Layout><div>Find Talent Page</div></Layout>} />
+          <Route path="/faq" element={<Layout><div>FAQ Page</div></Layout>} />
+          <Route path="/privacy-policy" element={<Layout><div>Privacy Policy Page</div></Layout>} />
+          <Route path="/terms" element={<Layout><div>Terms of Service Page</div></Layout>} />
+          
+          {/* Protected routes */}
+          <Route path="/post-job" element={
+            <Layout>
+              <ProtectedRoute requiredRole="employer">
+                <PostJobPage />
+              </ProtectedRoute>
+            </Layout>
+          } />
+          <Route path="/dashboard" element={
+            <Layout>
+              <ProtectedRoute requiredRole="employer">
+                <EmployerDashboardPage />
+              </ProtectedRoute>
+            </Layout>
+          } />
+          <Route path="/profile" element={
+            <Layout>
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            </Layout>
+          } />
+          
+          {/* 404 route */}
+          <Route path="*" element={<Layout><NotFoundPage /></Layout>} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 };
 

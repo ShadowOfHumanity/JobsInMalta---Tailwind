@@ -1,26 +1,28 @@
 import { useState } from "react";
-import globals from "./GlobalStates";
 import ApiClient from "../API-RELATED/Api-Client";
+import { useAuthSession as useAuthContext } from "./AuthContext";
 
 export interface LoginRequest {
   email: string;
   password: string;
-  // Removed role field as it will be determined on the backend
 }
 
 export interface LoginResponse {
-  success: boolean;
-  message: string;
-  data?: {
-    user_id: number;
-    user_role: string;
+  data: {
+    success: boolean;
+    message: string;
+    data?: {
+      user_id: number;
+      user_role: string;
+    };
   };
+  status: string;
 }
 
 export const useAuth = () => {
-  const [user, setUser] = useState<{ user_id: number; user_role: string } | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { checkSession } = useAuthContext();
 
   const login = async (credentials: LoginRequest) => {
     setLoading(true);
@@ -29,12 +31,13 @@ export const useAuth = () => {
     try {
       const response = await ApiClient.post<LoginResponse>('/auth/login', credentials);
       
-      if (response.data.success && response.data.data) {
-        setUser(response.data.data);
-        globals.setLoggedIn("loggedIn", true);
+
+      if (response.data.status === "success" && response.data.data.success) {
+        // After  login check session --> update  global auth state
+        await checkSession();
         return true;
       } else {
-        setError(response.data.message || 'Login failed');
+        setError(response.data.data?.message || 'Login failed');
         return false;
       }
     } catch (err: any) {
@@ -49,8 +52,8 @@ export const useAuth = () => {
     setLoading(true);
     try {
       await ApiClient.post('/auth/logout');
-      setUser(null);
-      globals.setLoggedIn("loggedIn", false);
+      // After logout, check  session --> update  global auth state
+      await checkSession();
       return true;
     } catch (err) {
       console.error('Logout error:', err);
@@ -60,5 +63,5 @@ export const useAuth = () => {
     }
   };
 
-  return { user, loading, error, login, logout };
+  return { loading, error, login, logout };
 };

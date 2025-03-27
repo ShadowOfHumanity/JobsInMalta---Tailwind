@@ -162,7 +162,7 @@ const registerEmployee = async (req, res) => {
     
 
     const newEmployee = new Employee(
-      req.body.email.toLowerCase(), // validate email instead of sanitize
+      req.body.email.toLowerCase(), 
       req.body.password,
       sanitizeString(req.body.first_name),
       sanitizeString(req.body.last_name),
@@ -208,10 +208,24 @@ const registerEmployee = async (req, res) => {
   }
 };
 
+const checkSession = async (req, res) => {
+  if (req.session && req.session.user_id) {
+    return res.status(200).json({
+      isAuthenticated: true,
+      user: {
+        user_id: req.session.user_id,
+        user_role: req.session.role
+      }
+    });
+  } else {
+    return res.status(200).json({
+      isAuthenticated: false,
+      user: null
+    });
+  }
+};
 
-
-module.exports = {login, logout, registerEmployer, registerEmployee}
-
+module.exports = {login, logout, registerEmployer, registerEmployee, checkSession}
 
 /* { LOGIN EXAMPLE
   "email": "user@example.com",
@@ -258,5 +272,4 @@ module.exports = {login, logout, registerEmployer, registerEmployee}
   "experience_Years": 5,
   "education_level": "Bachelor's",
   "portfolio_url": "https://portfolio.com"
-} 
-*/
+} */

@@ -53,11 +53,15 @@ const AuthForm = ({ type }: AuthFormProps) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData, selectedCountryCode, userType);
-    setEmailValidation(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
-    if (!emailValidation) return
+    
+    //  email validation 
+    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
+    setEmailValidation(isEmailValid);
+    
+    if (!isEmailValid) return;
+    
     if (userType === "employee" && type === "register") {
-      // now we have to turn the Data into EmployeeCreateRequest
+      //  turn Data into EmployeeCreateRequest
       let employeeData = {
         email: formData.email,
         password: formData.password,
@@ -69,22 +73,30 @@ const AuthForm = ({ type }: AuthFormProps) => {
       const result = await addEmployeeSubmit(employeeData);
       
       if (result?.success) {
-        login({email: formData.email, password: formData.password})
-        navigate("/");
+        // login after registration
+        const loginResult = await login({email: formData.email, password: formData.password});
+        if (loginResult) {
+          navigate("/");
+        }
       }
     } else if (userType === "employer" && type === "register") {
-
+      // employer registration
     } else if (type === "login") {
-      let result = await login({
-        email: formData.email, 
-        password: formData.password 
-      })
-      console.log(result)
-      console.log(loginError)
-      if (result) {
-        login({email: formData.email, password: formData.password})
-        navigate("/")
-        // TODO: CHANGE THE GLOBAL LOGGED IN STATE
+      try {
+        console.log("Attempting login with:", formData.email);
+        const loginResult = await login({
+          email: formData.email, 
+          password: formData.password 
+        });
+  
+        console.log("Login result:", loginResult);
+        
+        // If login, navigate to home 
+        if (loginResult) {
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Login error:", error);
       }
     }
   };
@@ -322,7 +334,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
       {/* Submit button */}
       <button
         type="submit"
-        className="w-full py-2.5 px-4 bg-gradient-to-r from-primary to-secondary text-white font-medium rounded-lg hover:opacity-95 transition-all duration-300"
+        className="w-full py-2.5 px-4 bg-gradient-to-r from-primary to-secondary text-white font-medium rounded-lg hover:opacity-100 hover:from-secondary hover:to-primary hover:shadow-lg hover:scale-[1.02] transform transition-all duration-300"
       >
         {type === "login" ? "Sign In" : "Create Account"}
       </button>

@@ -45,7 +45,7 @@ async function insertEmployer(newEmployer) {
             throw new Error(userResult.error);
         }
 
-        // Then insert the employer details
+        // insert the employer details
         const employerResult = await client.query(
             `INSERT INTO employers 
              (user_id, company_name, company_description, industry, 
@@ -95,7 +95,7 @@ async function insertEmployee(newEmployee) {
             throw new Error(userResult.error);
         }
 
-        // Then insert the employee details
+        //  insert  employee details
         const employeeResult = await client.query(
             `INSERT INTO employees 
              (user_id, first_name, last_name, professional_title, 
