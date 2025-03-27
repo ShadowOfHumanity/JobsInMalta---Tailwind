@@ -104,6 +104,18 @@ This repository documents my journey in creating JobsForMalta, a platform design
 - Refactored routing and component imports
 - Implemented new registration pages
 
+#### Phase 6: Authentication Enhancement & User Experience (Mar 21-27, 2025)
+- Improved internationalization with country code support for phone numbers
+- Enhanced password validation and sanitization
+- Added loading indicators with GeneralSpinner component
+- Refactored authentication logic to use hooks instead of global state
+- Implemented useAuth and useAuthSession hooks for better session management
+- Added user profile management with ProfileCircle component
+- Enhanced dark mode toggle functionality
+- Created employer job posting page (PostPg)
+- Improved user role-based navigation
+- Optimized authentication flows with better error handling
+
 ### Current Features
 - User authentication with session management
 - Separate employer and employee registration flows
@@ -247,20 +259,25 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 - [x] Dark/Light mode support
 - [x] Job search with filters
 - [x] Mobile-responsive design
+- [x] User profile management
+- [x] Employer job posting interface
 
 ### In Progress
 - [ ] Job applications system
 - [ ] Employer dashboard
-- [ ] User profile management
 - [ ] Advanced security features
-    - [ ] Secure job postings
-    - [ ] Enhanced session management
+    - [x] Password validation and sanitization
+    - [x] Enhanced session management
+    - [ ] Cross-site request forgery protection
 
-### Upcoming
+### Upcoming (Q2 2025)
 - [ ] Email notifications
 - [ ] Recommendation system
 - [ ] Analytics dashboard
 - [ ] Resume builder for job seekers
+- [ ] Chat system for employers and candidates
+- [ ] Application tracking system
+- [ ] Interview scheduling tool
 
 See the [open issues](https://github.com/ShadowOfHumanity/JobsInMalta---Tailwind/issues) for a full list of proposed features (and known issues).
 
