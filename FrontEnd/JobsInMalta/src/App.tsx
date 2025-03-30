@@ -5,6 +5,7 @@ import Navbar from "./Components/Navbar";
 import LoginPg from "./Pages/LoginPg";
 import RegisterPg from "./Pages/RegisterPg";
 import { AuthProvider, useAuthSession } from "./Hooks/AuthContext";
+import ProfilePg from "./Pages/ProfilePg";
 
 // Layout component that includes the navbar and footer
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -26,7 +27,7 @@ const PostJobPage = () => <div className="container mx-auto px-4 py-8">Post a Jo
 const LoginPage = () => <LoginPg />;
 const RegisterPage = () => <RegisterPg />;
 const EmployerDashboardPage = () => <div className="container mx-auto px-4 py-8">Employer Dashboard</div>;
-const ProfilePage = () => <div className="container mx-auto px-4 py-8">User Profile Page</div>;
+const ProfilePage = () => <ProfilePg />;
 const NotFoundPage = () => (
   <div className="container mx-auto px-4 py-20 text-center">
     <h1 className="text-4xl font-bold text-primary mb-4">404 - Page Not Found</h1>
