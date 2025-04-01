@@ -1,10 +1,9 @@
 import { useAuthSession } from "../Hooks/AuthContext";
-import { useState } from "react";
+import PFP from "../Components/PFP"; // Import the PFP component
 
 const ProfilePg = () => {
   const { user } = useAuthSession(); 
-  // Future hook implementation
-  const [activeTab, setActiveTab] = useState('about-skills');
+ 
   
   // Mock data
   const profileData = {
@@ -12,8 +11,6 @@ const ProfilePg = () => {
     role: "Software Developer",
     aboutMe: "I'm a passionate software developer with 5+ years of experience building web applications. I love solving complex problems and creating intuitive user experiences.",
     profilePicture: "https://via.placeholder.com/150",
-    hobbies: ["Reading", "Hiking", "Photography", "Coding side projects"],
-    skills: ["JavaScript", "React", "Node.js", "TypeScript", "Tailwind CSS"],
     contact: {
       email: "john.doe@example.com",
       phone: "+1 (555) 123-4567",
@@ -39,18 +36,11 @@ const ProfilePg = () => {
         
         {/* Banner */}
         <div className="bg-gradient-to-r from-blue-600 to-blue-800 h-28 md:h-32 relative"></div>
-        
         <div className="p-4 md:p-6 relative">
-          {/* Profile picture */}
-          <div className="absolute -top-12 md:-top-16 left-1/2 transform -translate-x-1/2">
-            <div className="relative">
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 animate-pulse blur-md opacity-80"></div>
-              <img 
-                src={profileData.profilePicture} 
-                alt={profileData.name}
-                className="w-28 h-28 md:w-36 md:h-36 rounded-full border-3 border-white shadow-lg object-cover relative z-10"
-              />
-            </div>
+          
+
+          <div className="absolute -top-12 md:-top-16 left-1/2 transform -translate-x-1/2 scale-[0.4] md:scale-[0.4] origin-top flex justify-center w-full">
+              <PFP profileImageUrl={profileData.profilePicture} />
           </div>
           
           {/* Name and role */}
@@ -66,97 +56,37 @@ const ProfilePg = () => {
               </span>
             </p>
             
-            {/* Navigation tabs */}
-            <div className="mb-4 border-b bg-gradient-to-r from-gray-50 via-white to-gray-50 rounded-t-lg">
-              <div className="flex justify-center">
-                <button 
-                  onClick={() => setActiveTab('about-skills')}
-                  className={`py-1 px-3 text-base font-medium transition-all duration-200 ${activeTab === 'about-skills' 
-                    ? 'text-blue-600 border-b-2 border-blue-600 bg-white' 
-                    : 'text-gray-500 hover:text-blue-400'}`}
-                >
-                  About & Skills
-                </button>
-                <button 
-                  onClick={() => setActiveTab('education-hobbies')}
-                  className={`py-1 px-3 text-base font-medium transition-all duration-200 ${activeTab === 'education-hobbies' 
-                    ? 'text-blue-600 border-b-2 border-blue-600 bg-white' 
-                    : 'text-gray-500 hover:text-blue-400'}`}
-                >
-                  Education & Hobbies
-                </button>
-              </div>
-            </div>
+            {/* Removed navigation tabs */}
           </div>
           
           {/* Main content */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
             <div className="lg:col-span-2 space-y-4">
-              {/* About & Skills tab */}
-              {activeTab === 'about-skills' && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* About Me */}
-                  <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-3 rounded-lg shadow-sm border border-blue-100">
-                    <h2 className="text-xl font-semibold mb-2 text-indigo-800 border-b border-indigo-200 pb-1">About Me</h2>
-                    <p className="text-base text-gray-700">{profileData.aboutMe}</p>
-                  </div>
-                  
-                  {/* Skills */}
-                  <div className="bg-gradient-to-br from-emerald-50 to-teal-50 p-3 rounded-lg shadow-sm border border-emerald-100">
-                    <h2 className="text-xl font-semibold mb-2 text-emerald-800 border-b border-emerald-200 pb-1">Skills</h2>
-                    <div className="flex flex-wrap gap-1.5">
-                      {profileData.skills.map((skill, index) => (
-                        <span key={index} className="bg-gradient-to-r from-emerald-400 to-teal-500 text-white px-2 py-1 rounded-full text-sm font-medium">
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
+              {/* About section (renamed from About & Skills) */}
+              <div className="grid grid-cols-1 gap-4">
+                {/* About Me */}
+                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-3 rounded-lg shadow-sm border border-blue-100">
+                  <h2 className="text-xl font-semibold mb-2 text-indigo-800 border-b border-indigo-200 pb-1">About Me</h2>
+                  <p className="text-base text-gray-700">{profileData.aboutMe}</p>
+                </div>
+                
+                {/* Education (moved from the removed tab) */}
+                <div className="bg-gradient-to-br from-amber-50 to-orange-50 p-3 rounded-lg shadow-sm border border-amber-100">
+                  <h2 className="text-xl font-semibold mb-2 text-amber-800 border-b border-amber-200 pb-1">Education</h2>
+                  <div className="space-y-2">
+                    {profileData.education.map((edu, index) => (
+                      <div key={index} className="border-l-3 border-amber-400 pl-2 py-1">
+                        <h3 className="text-base font-medium text-gray-800">{edu.degree}</h3>
+                        <p className="text-sm text-gray-600">{edu.school} • {edu.year}</p>
+                      </div>
+                    ))}
                   </div>
                 </div>
-              )}
-              
-              {/* Education & Hobbies tab */}
-              {activeTab === 'education-hobbies' && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* Education */}
-                  <div className="bg-gradient-to-br from-amber-50 to-orange-50 p-3 rounded-lg shadow-sm border border-amber-100">
-                    <h2 className="text-xl font-semibold mb-2 text-amber-800 border-b border-amber-200 pb-1">Education</h2>
-                    <div className="space-y-2">
-                      {profileData.education.map((edu, index) => (
-                        <div key={index} className="border-l-3 border-amber-400 pl-2 py-1">
-                          <h3 className="text-base font-medium text-gray-800">{edu.degree}</h3>
-                          <p className="text-sm text-gray-600">{edu.school} • {edu.year}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  {/* Hobbies */}
-                  <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-3 rounded-lg shadow-sm border border-purple-100">
-                    <h2 className="text-xl font-semibold mb-2 text-purple-800 border-b border-purple-200 pb-1">Hobbies</h2>
-                    <div className="grid grid-cols-1 gap-2">
-                      {profileData.hobbies.map((hobby, index) => (
-                        <div key={index} className="flex items-center bg-white rounded-md shadow-sm p-1.5">
-                          <div className="h-7 w-7 rounded-full bg-gradient-to-r from-purple-400 to-pink-500 flex items-center justify-center text-white mr-2">
-                            {/* Hobby icons */}
-                            {hobby === "Reading" && (
-                              <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                              </svg>
-                            )}
-                            {/* ...other hobby icons... */}
-                          </div>
-                          <span className="text-sm text-gray-700">{hobby}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
+              </div>
             </div>
             
             {/* Sidebar */}
-            <div>
+            <div className="lg:col-span-2">
               <div className="bg-gradient-to-r from-gray-50 to-slate-50 p-3 rounded-lg shadow-sm border border-slate-100">
                 {/* Contact info */}
                 <div className="mb-3">
