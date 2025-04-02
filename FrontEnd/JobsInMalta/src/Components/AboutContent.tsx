@@ -25,18 +25,13 @@ const AboutContent = ({ contentType, details }: { contentType: boolean, details:
                         {Array.isArray(details) && details.map((edu, index) => (
                             <div key={index} className="border-l-3 border-amber-400 pl-2 py-1">
                                 <div className="bg-gradient-to-br from-amber-50 to-orange-50 p-3 rounded-lg shadow-sm border border-amber-100">
-                                    <h2 className="text-xl font-semibold mb-2 text-amber-800 border-b border-amber-200 pb-1">Education</h2>
                                     <div className="space-y-2">
-                                        {details.map((edu, index) => (
-                                            <div key={index} className="border-l-3 border-amber-400 pl-2 py-1">
-                                                <h3 className="text-base font-medium text-gray-800">{edu.degree}</h3>
-                                                <p className="text-sm text-gray-600">{edu.school} • {edu.year}</p>
-                                            </div>
-                                        ))}
+                                        <div key={index} className="border-l-3 border-amber-400 pl-2 py-1">
+                                            <h3 className="text-base font-medium text-gray-800">{edu.degree}</h3>
+                                            <p className="text-sm text-gray-600">{edu.school} • {edu.year}</p>
+                                        </div>
                                     </div>
                                 </div>
-                                <h3 className="text-base font-medium text-gray-800">{edu.degree}</h3>
-                                <p className="text-sm text-gray-600">{edu.school} • {edu.year}</p>
                             </div>
                         ))}
                     </div>
