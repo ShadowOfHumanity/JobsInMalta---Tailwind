@@ -2,7 +2,7 @@ import defaultProfile from '../assets/DefaultAvatar.jpg'
 import { useAuthSession } from '../Hooks/AuthContext';
 
 interface PFPEditProps {
-  profileImageUrl: string | undefined;
+  profileImageUrl?: string | null;
   editable?: boolean; // Added boolean prop to control edit mode
 }
 

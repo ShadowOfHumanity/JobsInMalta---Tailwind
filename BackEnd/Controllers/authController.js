@@ -9,6 +9,7 @@ const {
   LogInUser, 
   getCompanyNameById,
 } = require('../db/USER_DB');
+const { countryCodeMap } = require('../Extras/CountryCodeMaps');
 
 
 const login = async (req, res) => {
@@ -151,6 +152,7 @@ const registerEmployee = async (req, res) => {
       });
     }
 
+    let location = countryCodeMap[req.body.country_code];
     let passwordResult = sanitizePassword(req.body.password);
     if (passwordResult){
       return res.status(400).json({
@@ -164,6 +166,7 @@ const registerEmployee = async (req, res) => {
     const newEmployee = new Employee(
       req.body.email.toLowerCase(), 
       req.body.password,
+      location,
       sanitizeString(req.body.first_name),
       sanitizeString(req.body.last_name),
       sanitizeString(req.body.professional_title),
