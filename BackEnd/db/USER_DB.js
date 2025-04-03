@@ -267,9 +267,10 @@ function validateEmployee(employee) {
         errors.push('last_name phone is required');
     }
 
-    if (!employee.contact_phone) {
+    if (!employee.contact_phone || !employee.country_code) {
         errors.push('Contact phone is required');
     }
+
 
     let validation = validateUser(employee);
     if (!validation.isValid) {
@@ -326,7 +327,7 @@ async function getEmployerData(user_id){
 }
 
 function getUserData(user_id){
-    
+
 }
 
 function editEmployee(edits) {

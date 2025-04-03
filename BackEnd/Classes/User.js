@@ -2,11 +2,13 @@ const { sanitizeString } = require('../Extras/Sanitizers');
 const bcrypt = require('bcrypt');
 
 class User {
-  constructor(email, password, role, location) {
+  constructor(email, password, role, location, contact_phone, country_code) {
     this.email = email;
     this.password_hash = this.hashPassword(password);
     this.role = role;
     this.location = location
+    this.contact_phone = contact_phone
+    this.country_code = country_code
   }
 
     hashPassword(password) {
@@ -16,8 +18,8 @@ class User {
 }
 
 class Employer extends User {
-  constructor(email, password, company_name, contact_phone, company_description, country_code) {
-    super(email, password, "employer", location);
+  constructor(email, password, company_name, company_description) {
+    super(email, password, "employer", location, contact_phone, country_code);
     this.company_name = company_name;
     this.contact_phone = contact_phone;
     this.country_code = country_code
@@ -39,14 +41,10 @@ class Employee extends User {
     bio,
     education,
     portfolio_url,
-    contact_phone,
-    country_code
   ) {
-    super(email, password, "employee", location);
+    super(email, password, "employee", location, contact_phone, country_code);
     this.first_name = first_name;
     this.last_name = last_name;
-    this.contact_phone = contact_phone;
-    this.country_code = country_code;
     this.professional_title = professional_title || null;
     this.bio = bio || null;
     this.education = education || null;
