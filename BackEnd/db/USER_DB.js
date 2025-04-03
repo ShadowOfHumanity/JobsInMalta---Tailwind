@@ -267,6 +267,7 @@ function validateEmployee(employee) {
         errors.push('last_name phone is required');
     }
 
+    console.log(employee)
     if (!employee.contact_phone || !employee.country_code) {
         errors.push('Contact phone is required');
     }

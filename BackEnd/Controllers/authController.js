@@ -153,6 +153,7 @@ const registerEmployee = async (req, res) => {
     }
 
     let location = countryCodeMap[req.body.country_code];
+    
     let passwordResult = sanitizePassword(req.body.password);
     if (passwordResult){
       return res.status(400).json({
@@ -161,12 +162,14 @@ const registerEmployee = async (req, res) => {
       });
     }
 
-    
+    console.log(parseInt(req.body.contact_phone))
 
     const newEmployee = new Employee(
       req.body.email.toLowerCase(), 
       req.body.password,
       location,
+      parseInt(req.body.contact_phone),
+      sanitizeCode(req.body.country_code),
       sanitizeString(req.body.first_name),
       sanitizeString(req.body.last_name),
       sanitizeString(req.body.professional_title),
@@ -175,17 +178,17 @@ const registerEmployee = async (req, res) => {
       parseInt(req.body.experience_Years),
       sanitizeString(req.body.education_level),
       req.body.portfolio_url,
-      parseInt(req.body.contact_phone),
-      sanitizeCode(req.body.country_code)
     );
 
     const validation = validateEmployee(newEmployee);
     if (!validation.isValid) {
+      console.log("Validation errors:", validation.errors);
       return res.status(400).json({
         status: "error",
         errors: validation.errors,
       });
     }
+    
     const employeeResult = await insertEmployee(newEmployee);
     if (!employeeResult.success) {
       console.error("Database error:", employeeResult.error);
