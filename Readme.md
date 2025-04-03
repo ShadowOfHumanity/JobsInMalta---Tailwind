@@ -263,6 +263,8 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 - [x] Employer job posting interface
 
 ### In Progress
+- [ ] Fix emails input on login & register, lowercase all automatically
+- [ ] Remove "skills" and "experience_years" fields from database (Education has its own table linked with user_id)
 - [ ] Job applications system
 - [ ] Employer dashboard
 - [ ] Advanced security features

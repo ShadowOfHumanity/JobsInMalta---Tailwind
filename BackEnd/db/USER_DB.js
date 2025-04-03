@@ -326,7 +326,7 @@ async function getEmployerData(user_id){
 }
 
 function getUserData(user_id){
-
+    
 }
 
 function editEmployee(edits) {

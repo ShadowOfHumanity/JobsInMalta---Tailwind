@@ -225,6 +225,8 @@ const checkSession = async (req, res) => {
   }
 };
 
+
+
 module.exports = {login, logout, registerEmployer, registerEmployee, checkSession}
 
 /* { LOGIN EXAMPLE

@@ -8,6 +8,7 @@ const {
   getEmployeeData,
 } = require("./db/USER_DB");
 
+
 const authRoutes = require("./Routes/authRoute");
 const userRoutes = require("./Routes/userRoute");
 const jobRoutes = require("./Routes/jobRoute");
@@ -42,6 +43,8 @@ app.use(
 
 app.use('/auth', authRoutes) // login, logout, register (all post)
 
+app.use('/user', userRoutes) // getProfileInfo (get), editProfile (put) /user/getProfileInfo
+
 app.use('/jobs', jobRoutes) // getJobs (get), postJobs (post) /jobs/getJobs
 
 // just temporary get, to see if the server is running
@@ -69,26 +72,6 @@ app.put("/editUser", (req, res) => { // <--- Still have to make
   }
 });
 
-app.get("/userInfo", async (req, res) => { // <--- STILL have to make
-  // get user info
-  if (req.session.user_id) {
-    if (req.session.role === "employer") {
-      let data = await getEmployerData(req.session.user_id)
-      res.status(200).json({status: data.success, data: data.employer});
-      
-    } else if (req.session.role === "employee") {
-      let data = await getEmployeeData(req.session.user_id)
-      res.status(200).json({status: data.success, data: data.employee});
-    } else {
-      console.log("Admin user info request doesnt exist yet");
-    }
-  } else {
-    return res.status(401).json({
-      status: "error",
-      message: "Unauthorized"
-    }); 
-  }
-});
 
 
 app.put("/jobs", (req, res) => { // <--- STILL have to make

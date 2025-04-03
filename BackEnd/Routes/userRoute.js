@@ -1,7 +1,11 @@
-const express = require('express')
+const express = require('express');
+const { getProfileInfo } = require('../Controllers/userController');
 
 const router = express.Router();
 
-
+router.get(
+    '/getProfileInfo',
+    getProfileInfo
+)
 
 module.exports = router
