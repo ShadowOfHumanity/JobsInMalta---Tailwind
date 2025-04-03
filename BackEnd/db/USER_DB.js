@@ -9,10 +9,10 @@ async function insertUser(newUser, client = null) {
 
     try {
         const userResult = await client.query(
-            `INSERT INTO users (email, password_hash, role) 
-             VALUES ($1, $2, $3) 
+            `INSERT INTO users (email, password_hash, role, location, contact_phone, country_code) 
+             VALUES ($1, $2, $3, $4, $5, $6) 
              RETURNING user_id`,
-            [newUser.email, newUser.password_hash, newUser.role]
+            [newUser.email, newUser.password_hash, newUser.role, newUser.location, newUser.contact_phone, newUser.country_code]
         );
 
         const userId = userResult.rows[0].user_id;
@@ -38,7 +38,10 @@ async function insertEmployer(newEmployer) {
         const userResult = await insertUser({
             email: newEmployer.email,
             password_hash: newEmployer.password_hash,
-            role: 'employer'
+            role: 'employer',
+            location: newEmployer.location,
+            contact_phone: newEmployer.contact_phone,
+            country_code: newEmployer.country_code
         }, client);
 
         if (!userResult.success) {
@@ -49,8 +52,8 @@ async function insertEmployer(newEmployer) {
         const employerResult = await client.query(
             `INSERT INTO employers 
              (user_id, company_name, company_description, industry, 
-              website_url, contact_phone, company_size)
-             VALUES ($1, $2, $3, $4, $5, $6, $7)
+              website_url, company_size)
+             VALUES ($1, $2, $3, $4, $5, $6)
              RETURNING employer_id`,
             [
                 userResult.userId,
@@ -58,7 +61,6 @@ async function insertEmployer(newEmployer) {
                 newEmployer.company_description,
                 newEmployer.industry,
                 newEmployer.website_url,
-                newEmployer.contact_phone,
                 newEmployer.company_size
             ]
         );
@@ -88,7 +90,10 @@ async function insertEmployee(newEmployee) {
         const userResult = await insertUser({
             email: newEmployee.email,
             password_hash: newEmployee.password_hash,
-            role: 'employee'
+            role: 'employee',
+            location: newEmployee.location,
+            contact_phone: newEmployee.contact_phone,
+            country_code: newEmployee.country_code
         }, client);
 
         if (!userResult.success) {
@@ -98,9 +103,9 @@ async function insertEmployee(newEmployee) {
         //  insert  employee details
         const employeeResult = await client.query(
             `INSERT INTO employees 
-             (user_id, first_name, last_name, professional_title, 
-              bio, skills, experience_years, education_level, portfolio_url, contact_phone, country_code)
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+             ( user_id, first_name, last_name, professional_title, 
+              bio, portfolio_url )
+             VALUES ($1, $2, $3, $4, $5, $6)
              RETURNING employee_id`,
             [
                 userResult.userId,
@@ -108,12 +113,7 @@ async function insertEmployee(newEmployee) {
                 newEmployee.last_name,
                 newEmployee.professional_title,
                 newEmployee.bio,
-                newEmployee.skills,
-                newEmployee.experience_years,
-                newEmployee.education_level,
                 newEmployee.portfolio_url,
-                newEmployee.contact_phone,
-                newEmployee.country_code
             ]
         );
 
