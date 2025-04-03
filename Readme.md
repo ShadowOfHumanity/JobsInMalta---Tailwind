@@ -261,9 +261,12 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 - [x] Mobile-responsive design
 - [x] User profile management
 - [x] Employer job posting interface
+- [x] Fixed email handling in login & registration forms (automatic lowercase conversion)
+- [x] Enhanced employer registration process
+- [x] Optimized authentication hooks for better performance
+- [x] Fixed login functionality and error handling
 
 ### In Progress
-- [ ] Fix emails input on login & register, lowercase all automatically
 - [ ] Remove "skills" and "experience_years" fields from database (Education has its own table linked with user_id)
 - [ ] Job applications system
 - [ ] Employer dashboard
