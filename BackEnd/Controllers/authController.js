@@ -136,7 +136,7 @@ const registerEmployer =  async (req, res) => {
       console.error("Database error:", employerResult.error);
       return res.status(500).json({
         status: "error",
-        errors: [employerResult.error],
+        errors: ["other", employerResult.error],
       });
     }
 

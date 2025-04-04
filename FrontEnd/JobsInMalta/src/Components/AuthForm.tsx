@@ -6,9 +6,10 @@ import { HiMail } from "react-icons/hi";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaUser, FaBuilding, FaPhone } from "react-icons/fa";
 import AddEmployee from "../Hooks/AddEmployee";
+import AddEmployer from "../Hooks/AddEmployer";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Hooks/UseAuth";
-import { useAuthSession } from "../Hooks/AuthContext";
+
 
 interface AuthFormProps {
   type: "login" | "register";
@@ -29,10 +30,8 @@ const countryCodes: CountryCode[] = [
 
 const AuthForm = ({ type }: AuthFormProps) => {
   const {handleSubmit: addEmployeeSubmit, addEmployeeErrors } = AddEmployee();
+  const {handleSubmit: addEmployerSubmit, addEmployerErrors } = AddEmployer();
   const { error: loginError , login } = useAuth()
-  const { user } = useAuthSession();
-  
-  
 
   const [userType, setUserType] = useState<"employee" | "employer">("employee");
   const [emailValidation, setEmailValidation] = useState<boolean | null>(null);
@@ -78,15 +77,24 @@ const AuthForm = ({ type }: AuthFormProps) => {
         // login after registration
         const loginResult = await login({email: formData.email, password: formData.password});
         if (loginResult) {
-          if (user?.user_role === "employee") {
           navigate("/");
-          } else { 
-            navigate("/post-job");
-          }
         }
       }
     } else if (userType === "employer" && type === "register") {
-      // employer registration
+      let employerData = {
+        email: formData.email,
+        password: formData.password,
+        company_name: formData.company_name,
+        contact_phone: formData.contact_phone,
+        country_code: selectedCountryCode,
+      }
+      const result = await addEmployerSubmit(employerData)
+      if (result?.success) {
+        const loginResult = await login({email: formData.email, password: formData.password});
+        if (loginResult) {
+          navigate("post-job");
+        }
+      }
     } else if (type === "login") {
       try {
         console.log("Attempting login with:", formData.email);
@@ -306,8 +314,19 @@ const AuthForm = ({ type }: AuthFormProps) => {
             required
           />
         </div>
-        {(addEmployeeErrors && addEmployeeErrors[0] === "password"  ||  loginError) && 
-          <p className="text-red-500 text-sm">{ loginError ? loginError : addEmployeeErrors[1] }</p>
+        {((addEmployeeErrors && addEmployeeErrors[0] === "password") || 
+           (addEmployerErrors && addEmployerErrors[0] === "password") ||
+           (addEmployeeErrors && addEmployeeErrors[0] === "other") ||
+           (addEmployerErrors && addEmployerErrors[0] === "other") ||  
+           loginError) && 
+          <p className="text-red-500 text-sm">
+            { loginError ? loginError : 
+              (addEmployeeErrors && addEmployeeErrors[0] === "password") ? addEmployeeErrors[1] : 
+              (addEmployeeErrors && addEmployeeErrors[0] === "other") ? addEmployeeErrors[1] :
+              (addEmployerErrors && addEmployerErrors[0] === "password") ? addEmployerErrors[1] :
+              (addEmployerErrors && addEmployerErrors[0] === "other") ? addEmployerErrors[1] :
+              "" }
+          </p>
         }
       </div>
      
