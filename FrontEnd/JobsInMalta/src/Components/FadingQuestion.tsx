@@ -101,8 +101,6 @@ const FadingQuestion: React.FC<FadingQuestionProps> = ({
   onAddInput = () => {},
   onRemoveInput = () => {},
   showAddButton = false,
-  // New props with defaults
-  fullWidthDegree = false,
   twoRowLayout = false
 }) => {
   // Combine related state into a single object to reduce renders
