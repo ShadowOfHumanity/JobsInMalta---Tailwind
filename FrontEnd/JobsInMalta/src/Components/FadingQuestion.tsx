@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo, memo } from 'react';
 
 // Enhanced color theme mapping with more vibrant colors
 const themeColors = {
@@ -105,13 +105,53 @@ const FadingQuestion: React.FC<FadingQuestionProps> = ({
   fullWidthDegree = false,
   twoRowLayout = false
 }) => {
-  const [isFocused, setIsFocused] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-  const [hasInteracted, setHasInteracted] = useState(false);
-  const [focusedInputIndex, setFocusedInputIndex] = useState<number | null>(null);
-  
-  // Get theme colors
-  const theme = themeColors[colorTheme];
+  // Combine related state into a single object to reduce renders
+  const [state, setState] = useState({
+    isFocused: false,
+    isHovered: false,
+    hasInteracted: false,
+    focusedInputIndex: null as number | null
+  });
+
+  // Memoize theme colors to avoid recalculation
+  const theme = useMemo(() => themeColors[colorTheme], [colorTheme]);
+
+  // Optimize handlers with useCallback
+  const handleMouseEnter = useCallback(() => {
+    setState(prev => ({ 
+      ...prev, 
+      isHovered: true,  
+      hasInteracted: true 
+    }));
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setState(prev => ({ ...prev, isHovered: false }));
+  }, []);
+
+  const handleFocus = useCallback(() => {
+    setState(prev => ({ ...prev, isFocused: true }));
+  }, []);
+
+  const handleBlur = useCallback(() => {
+    setState(prev => ({ ...prev, isFocused: false }));
+  }, []);
+
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange(e);
+    setState(prev => ({ ...prev, hasInteracted: true }));
+  }, [onChange]);
+
+  const handleMultiInputFocus = useCallback((index: number) => {
+    setState(prev => ({ ...prev, focusedInputIndex: index }));
+  }, []);
+
+  const handleMultiInputBlur = useCallback(() => {
+    setState(prev => ({ ...prev, focusedInputIndex: null }));
+  }, []);
+
+  // Extract state values for readability
+  const { isFocused, isHovered, hasInteracted, focusedInputIndex } = state;
 
   return (
     <div 
@@ -134,15 +174,17 @@ const FadingQuestion: React.FC<FadingQuestionProps> = ({
             hover:shadow-md dark:hover:shadow-gray-900/70
             ${hasInteracted ? 'translate-y-0' : 'translate-y-2 opacity-90'}
           `}
-          onMouseEnter={() => { setIsHovered(true); setHasInteracted(true); }}
-          onMouseLeave={() => setIsHovered(false)}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
           style={{
             transition: 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            willChange: 'transform, box-shadow',
+            transform: `translateZ(0) ${isFocused ? 'scale(1.01)' : isHovered ? 'scale(1.005)' : 'scale(1)'} ${hasInteracted ? 'translateY(0)' : 'translateY(0.5rem)'}`,
           }}
         >
-          {/* Enhanced decorative elements */}
-          <div className="absolute -top-2 -right-2 w-12 h-12 rounded-full bg-white/30 dark:bg-gray-700/30 -z-10 blur-md opacity-80"></div>
-          <div className={`absolute -bottom-1 -left-1 w-8 h-8 rounded-full bg-gradient-to-br ${theme.gradient} -z-10 blur-sm opacity-70`}></div>
+          {/* Optimized decorative elements - reduced number of blur effects */}
+          <div className="absolute -top-2 -right-2 w-12 h-12 rounded-full bg-white/30 dark:bg-gray-700/30 -z-10 opacity-80"></div>
+          <div className={`absolute -bottom-1 -left-1 w-8 h-8 rounded-full bg-gradient-to-br ${theme.gradient} -z-10 opacity-70`}></div>
           
           {/* Header with question */}
           <div className="flex justify-between items-center mb-1">
@@ -160,24 +202,33 @@ const FadingQuestion: React.FC<FadingQuestionProps> = ({
             </div>
           </div>
 
-          {/* Enhanced divider with animated gradient on focus */}
+          {/* Optimized divider with simplified animation */}
           <div className="relative h-px w-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
             <div 
-              className={`absolute h-full bg-gradient-to-r ${isFocused ? `from-transparent via-${colorTheme === 'default' ? 'primary' : colorTheme}-500 to-transparent dark:via-${colorTheme === 'default' ? 'primary-light' : colorTheme}-400 w-full` : 'w-0'} 
-              transition-all duration-700 ease-in-out`}
+              className={`absolute h-full bg-gradient-to-r from-transparent via-${colorTheme === 'default' ? 'primary' : colorTheme}-500 to-transparent dark:via-${colorTheme === 'default' ? 'primary-light' : colorTheme}-400`}
               style={{
+                width: '100%',
                 left: isFocused ? '0%' : '-100%',
-                opacity: isFocused ? 0.6 : 0
+                opacity: isFocused ? 0.6 : 0,
+                transition: 'left 700ms ease-in-out, opacity 700ms ease-in-out',
+                willChange: 'left, opacity'
               }}
             ></div>
           </div>
 
-          {/* Input field with improved styling */}
+          {/* Input field with improved performance */}
           <div className="mt-2">
             <div className="relative overflow-hidden rounded-md">
-              {/* Subtle background animation when focused */}
+              {/* Hardware-accelerated background effect when focused */}
               {isFocused && (
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent dark:via-white/5 animate-shine"></div>
+                <div 
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent dark:via-white/5"
+                  style={{ 
+                    animation: 'shine 1.6s ease-in-out infinite',
+                    willChange: 'transform',
+                    transform: 'translateZ(0)'
+                  }}
+                ></div>
               )}
               
               <input
@@ -185,10 +236,7 @@ const FadingQuestion: React.FC<FadingQuestionProps> = ({
                 type={type}
                 name={name}
                 value={value}
-                onChange={(e) => {
-                  onChange(e);
-                  setHasInteracted(true);
-                }}
+                onChange={handleChange}
                 placeholder={placeholder}
                 className={`
                   w-full py-3.5 px-4 
@@ -205,30 +253,40 @@ const FadingQuestion: React.FC<FadingQuestionProps> = ({
                     : isHovered 
                       ? 'bg-white/95 dark:bg-gray-750/95' 
                       : 'bg-white/90 dark:bg-gray-750/90'
-                }
+                  }
                 `}
                 style={{
                   backdropFilter: 'blur(8px)',
+                  willChange: 'background-color'
                 }}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
               />
               
-              {/* Enhanced focus effect */}
+              {/* Optimized focus effect - reduced animation complexity */}
               {isFocused && (
-                <div className={`absolute inset-0 rounded-md pointer-events-none ring-1 ${theme.ring} animate-pulse`}></div>
+                <div 
+                  className={`absolute inset-0 rounded-md pointer-events-none ring-1 ${theme.ring}`}
+                  style={{ 
+                    opacity: '0.8',
+                    willChange: 'opacity'
+                  }}
+                ></div>
               )}
               
-              {/* Subtle highlight on hover */}
+              {/* Static highlight on hover instead of animated */}
               {isHovered && !isFocused && (
-                <div className="absolute inset-0 rounded-md pointer-events-none ring-1 ring-gray-300 dark:ring-gray-600 transition-opacity duration-300"></div>
+                <div 
+                  className="absolute inset-0 rounded-md pointer-events-none ring-1 ring-gray-300 dark:ring-gray-600"
+                  style={{ willChange: 'opacity' }}
+                ></div>
               )}
             </div>
           </div>
         </div>
       )}
 
-      {/* Multi-input question with enhanced layout for education */}
+      {/* Multi-input question with performance optimizations */}
       {isMultiInput && (
         <div>
           <div 
@@ -239,7 +297,11 @@ const FadingQuestion: React.FC<FadingQuestionProps> = ({
               p-5 transition-all duration-300 ease-in-out
               hover:shadow-md dark:hover:shadow-gray-900/70
             `}
-            onMouseEnter={() => setHasInteracted(true)}
+            onMouseEnter={handleMouseEnter}
+            style={{
+              willChange: 'box-shadow',
+              transform: 'translateZ(0)'
+            }}
           >
             {/* Header with question */}
             <div className="flex justify-between items-center mb-3">
@@ -257,15 +319,22 @@ const FadingQuestion: React.FC<FadingQuestionProps> = ({
               </div>
             </div>
 
-            {/* Multi-Input Fields with enhanced layout */}
+            {/* Performance-optimized education fields */}
             {multiValues.map((itemValues, index) => (
-              <div key={index} className={`mb-6 p-5 bg-white/80 dark:bg-gray-750/80 rounded-lg shadow-sm ${focusedInputIndex === index ? `ring-2 ${theme.focus}` : ''}`}>
+              <div 
+                key={index} 
+                className={`mb-6 p-5 bg-white/80 dark:bg-gray-750/80 rounded-lg shadow-sm ${focusedInputIndex === index ? `ring-2 ${theme.focus}` : ''}`}
+                style={{
+                  willChange: focusedInputIndex === index ? 'box-shadow' : 'auto',
+                  transform: 'translateZ(0)'
+                }}
+              >
                 <div className="flex justify-between items-center mb-3">
                   <span className="text-sm font-medium text-gray-500 dark:text-gray-400 bg-emerald-50 dark:bg-emerald-900/30 px-3 py-1 rounded-full">
                     Education #{index + 1}
                   </span>
                   
-                  {/* Remove button */}
+                  {/* Remove button - optimized */}
                   {multiValues.length > 1 && (
                     <button 
                       type="button"
@@ -279,9 +348,9 @@ const FadingQuestion: React.FC<FadingQuestionProps> = ({
                   )}
                 </div>
                 
-                {/* Three-row layout for education fields */}
+                {/* Optimized layout for education fields */}
                 <div className="space-y-4">
-                  {/* Row 1: Degree (full width) */}
+                  {/* Row 1: Degree (full width) - optimized */}
                   {twoRowLayout && (
                     <div className="w-full">
                       {multiInputFields.filter(field => field.key === 'degree').map((field) => (
@@ -298,19 +367,19 @@ const FadingQuestion: React.FC<FadingQuestionProps> = ({
                             value={itemValues[field.key] || ''}
                             onChange={(e) => {
                               onMultiInputChange(index, field.key, e.target.value);
-                              setHasInteracted(true);
+                              setState(prev => ({ ...prev, hasInteracted: true }));
                             }}
                             placeholder={field.placeholder}
                             className="w-full bg-white/90 dark:bg-gray-700/90 border-0 rounded-md py-2.5 px-3 text-gray-800 dark:text-gray-100 shadow-inner shadow-gray-200/40 dark:shadow-black/20 focus:ring-2 focus:outline-none transition-all duration-200"
-                            onFocus={() => setFocusedInputIndex(index)}
-                            onBlur={() => setFocusedInputIndex(null)}
+                            onFocus={() => handleMultiInputFocus(index)}
+                            onBlur={handleMultiInputBlur}
                           />
                         </div>
                       ))}
                     </div>
                   )}
                   
-                  {/* Row 2: School (full width) */}
+                  {/* Rest of the education fields - optimized rendering */}
                   <div className="w-full">
                     {multiInputFields
                       .filter(field => field.key === 'school')
@@ -328,18 +397,17 @@ const FadingQuestion: React.FC<FadingQuestionProps> = ({
                             value={itemValues[field.key] || ''}
                             onChange={(e) => {
                               onMultiInputChange(index, field.key, e.target.value);
-                              setHasInteracted(true);
+                              setState(prev => ({ ...prev, hasInteracted: true }));
                             }}
                             placeholder={field.placeholder}
                             className="w-full bg-white/90 dark:bg-gray-700/90 border-0 rounded-md py-2.5 px-3 text-gray-800 dark:text-gray-100 shadow-inner shadow-gray-200/40 dark:shadow-black/20 focus:ring-2 focus:outline-none transition-all duration-200"
-                            onFocus={() => setFocusedInputIndex(index)}
-                            onBlur={() => setFocusedInputIndex(null)}
+                            onFocus={() => handleMultiInputFocus(index)}
+                            onBlur={handleMultiInputBlur}
                           />
                         </div>
                     ))}
                   </div>
                   
-                  {/* Row 3: Year Started and Year Completed in same row */}
                   <div className="grid grid-cols-2 gap-3">
                     {multiInputFields
                       .filter(field => field.key === 'yearStarted' || field.key === 'year')
@@ -357,12 +425,12 @@ const FadingQuestion: React.FC<FadingQuestionProps> = ({
                             value={itemValues[field.key] || ''}
                             onChange={(e) => {
                               onMultiInputChange(index, field.key, e.target.value);
-                              setHasInteracted(true);
+                              setState(prev => ({ ...prev, hasInteracted: true }));
                             }}
                             placeholder={field.placeholder}
                             className="w-full bg-white/90 dark:bg-gray-700/90 border-0 rounded-md py-2.5 px-3 text-gray-800 dark:text-gray-100 shadow-inner shadow-gray-200/40 dark:shadow-black/20 focus:ring-2 focus:outline-none transition-all duration-200"
-                            onFocus={() => setFocusedInputIndex(index)}
-                            onBlur={() => setFocusedInputIndex(null)}
+                            onFocus={() => handleMultiInputFocus(index)}
+                            onBlur={handleMultiInputBlur}
                           />
                         </div>
                     ))}
@@ -371,7 +439,7 @@ const FadingQuestion: React.FC<FadingQuestionProps> = ({
               </div>
             ))}
 
-            {/* Add More button - enhanced styling */}
+            {/* Optimized Add button */}
             {showAddButton && (
               <button
                 type="button"
@@ -393,4 +461,22 @@ const FadingQuestion: React.FC<FadingQuestionProps> = ({
   );
 };
 
-export default FadingQuestion;
+// Add CSS for optimized shine animation
+const injectShineAnimation = () => {
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes shine {
+      0% { transform: translateX(-100%) translateZ(0); }
+      100% { transform: translateX(100%) translateZ(0); }
+    }
+  `;
+  document.head.appendChild(style);
+};
+
+// Run once when component is first used
+if (typeof window !== 'undefined') {
+  injectShineAnimation();
+}
+
+// Memoize the component to prevent unnecessary re-renders
+export default memo(FadingQuestion);

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FadingQuestion from '../Components/FadingQuestion';
 import { Education } from '../types';
-
+ 
 // New color variants for question categories with enhanced color palette
 //  questionTypes = {
 //   professional: 'indigo',
@@ -11,7 +11,7 @@ import { Education } from '../types';
 //   portfolio: 'amber'
 // };
 
-const ExtraDetailsPg = () => {
+const ExtraDetailsPg = () => { 
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     jobTitle: '',
@@ -20,16 +20,17 @@ const ExtraDetailsPg = () => {
     portfolioUrl: '',
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Optimize event handlers with useCallback to prevent recreating functions on each render
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
-  };
+  }, []);
 
-  // Handle education field changes
-  const handleEducationChange = (index: number, field: string, value: string) => {
+  // Handle education field changes - optimized with useCallback
+  const handleEducationChange = useCallback((index: number, field: string, value: string) => {
     const updatedEducation = [...formData.education];
     updatedEducation[index] = { ...updatedEducation[index], [field]: value };
     
@@ -37,18 +38,18 @@ const ExtraDetailsPg = () => {
       ...prev,
       education: updatedEducation
     }));
-  };
+  }, [formData.education]);
 
-  // Add a new education entry
-  const addEducation = () => {
+  // Add a new education entry - optimized with useCallback
+  const addEducation = useCallback(() => {
     setFormData(prev => ({
       ...prev,
       education: [...prev.education, { degree: '', school: '', yearStarted: '', year: '' }]
     }));
-  };
+  }, []);
 
-  // Remove an education entry
-  const removeEducation = (index: number) => {
+  // Remove an education entry - optimized with useCallback
+  const removeEducation = useCallback((index: number) => {
     if (formData.education.length <= 1) return; // Keep at least one education entry
     
     const updatedEducation = formData.education.filter((_, i) => i !== index);
@@ -56,17 +57,13 @@ const ExtraDetailsPg = () => {
       ...prev,
       education: updatedEducation
     }));
-  };
+  }, [formData.education.length]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
-    
-    
-
-
     console.log('Form data submitted:', formData);
     navigate('/profile');
-  };
+  }, [formData, navigate]);
 
   // Updated education multi-input fields with simplified placeholder
   const educationFields = [
@@ -96,8 +93,8 @@ const ExtraDetailsPg = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/30 dark:from-gray-900 dark:via-indigo-950/30 dark:to-purple-950/30 py-12 relative overflow-hidden">
-      {/* Enhanced decorative background elements */}
-      <div className="absolute top-0 right-0 w-1/3 h-32 bg-indigo-100 dark:bg-indigo-900/30 rounded-bl-full opacity-60 -z-10 animate-pulse-slow"></div>
+      {/* Enhanced decorative background elements - removed animation for better performance */}
+      <div className="absolute top-0 right-0 w-1/3 h-32 bg-indigo-100 dark:bg-indigo-900/30 rounded-bl-full opacity-60 -z-10"></div>
       <div className="absolute bottom-0 left-0 w-1/4 h-40 bg-emerald-100 dark:bg-emerald-900/30 rounded-tr-full opacity-60 -z-10"></div>
       <div className="absolute top-1/4 left-0 w-24 h-24 bg-violet-100 dark:bg-violet-900/20 rounded-full opacity-40 -z-10 blur-lg"></div>
       <div className="absolute bottom-1/3 right-0 w-32 h-32 bg-amber-100 dark:bg-amber-900/20 rounded-full opacity-40 -z-10 blur-lg"></div>
@@ -133,11 +130,11 @@ const ExtraDetailsPg = () => {
               </h2>
             </div>
             
-            {/* Updated layout: LinkedIn and Portfolio in one row, Job Title below */}
+            {/* Optimized layout with hardware acceleration for transforms */}
             <div className="space-y-4 md:space-y-6">
               {/* First row: LinkedIn and Portfolio URLs side by side */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                <div className="transform -rotate-1 hover:rotate-0 transition-transform duration-300">
+                <div className="transform -rotate-1 hover:rotate-0 transition-transform duration-300" style={{ willChange: 'transform', transform: 'translateZ(0) rotate(-1deg)' }}>
                   <FadingQuestion
                     question="LinkedIn URL"
                     placeholder="e.g. https://linkedin.com/in/yourprofile"
@@ -149,7 +146,7 @@ const ExtraDetailsPg = () => {
                   />
                 </div>
                 
-                <div className="transform rotate-1 hover:rotate-0 transition-transform duration-300">
+                <div className="transform rotate-1 hover:rotate-0 transition-transform duration-300" style={{ willChange: 'transform', transform: 'translateZ(0) rotate(1deg)' }}>
                   <FadingQuestion
                     question="Portfolio/Website URL"
                     placeholder="e.g. https://yourportfolio.com"
@@ -162,8 +159,8 @@ const ExtraDetailsPg = () => {
                 </div>
               </div>
               
-              {/* Second row: Job Title full width */}
-              <div className="transform -rotate-1 hover:rotate-0 transition-transform duration-300">
+              {/* Second row: Job Title full width - with performance optimization */}
+              <div className="transform -rotate-1 hover:rotate-0 transition-transform duration-300" style={{ willChange: 'transform', transform: 'translateZ(0) rotate(-1deg)' }}>
                 <FadingQuestion
                   question="What is your current job title?"
                   placeholder="e.g. Software Developer, Project Manager"
@@ -177,7 +174,7 @@ const ExtraDetailsPg = () => {
             </div>
           </div>
           
-          {/* Education History moved to bottom */}
+          {/* Education History section - with performance optimization */}
           <div className="mb-8 relative">
             <div className="flex items-center mb-6 md:mb-8">
               <span className="h-7 w-7 md:h-8 md:w-8 flex items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-900/50 text-emerald-600 dark:text-emerald-400 mr-3">
@@ -192,13 +189,13 @@ const ExtraDetailsPg = () => {
               </h2>
             </div>
             
-            {/* Updated Education Section with enhanced layout */}
-            <div className="transform rotate-1 hover:rotate-0 transition-transform duration-300">
+            {/* Optimized transform with hardware acceleration */}
+            <div className="transform rotate-1 hover:rotate-0 transition-transform duration-300" style={{ willChange: 'transform', transform: 'translateZ(0) rotate(1deg)' }}>
               <FadingQuestion
                 question="Education Details"
                 placeholder="Add your education details"
                 name="education"
-                position="default" // Changed from 'left' to 'default' for wider fields
+                position="default"
                 colorTheme={"emerald"}
                 isMultiInput={true}
                 multiInputFields={educationFields}
@@ -212,8 +209,8 @@ const ExtraDetailsPg = () => {
                 onAddInput={addEducation}
                 onRemoveInput={removeEducation}
                 showAddButton={true}
-                fullWidthDegree={true} // New prop to indicate degree field should be full width
-                twoRowLayout={true} // New prop to indicate using a two-row layout
+                fullWidthDegree={true}
+                twoRowLayout={true}
               />
             </div>
           </div>
@@ -228,6 +225,7 @@ const ExtraDetailsPg = () => {
               <span className="italic opacity-90 hover:opacity-100 transition-opacity">You can always update these details later</span>
             </div>
             
+            {/* Optimized button transforms */}
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
               <button
                 type="button"
@@ -239,9 +237,10 @@ const ExtraDetailsPg = () => {
                           transition-all duration-300 shadow-sm hover:shadow
                           transform hover:-translate-y-0.5 active:translate-y-0 w-full sm:w-auto
                           relative overflow-hidden group"
+                style={{ willChange: 'transform' }}
               >
                 <span className="relative z-10">Skip for now</span>
-                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-200 to-transparent dark:via-gray-700 opacity-0 group-hover:opacity-100 transform translate-x-full group-hover:translate-x-0 transition-all duration-700 ease-out"></span>
+                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-200 to-transparent dark:via-gray-700 opacity-0 group-hover:opacity-100 transform translate-x-full group-hover:translate-x-0 transition-all duration-700 ease-out" style={{ willChange: 'opacity, transform' }}></span>
               </button>
               <button
                 type="submit"
@@ -252,10 +251,11 @@ const ExtraDetailsPg = () => {
                           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500/50 dark:focus:ring-offset-gray-900
                           transition-all duration-300 shadow-md hover:shadow-lg
                           transform hover:-translate-y-0.5 active:translate-y-0 w-full sm:w-auto"
+                style={{ willChange: 'transform' }}
               >
                 <span className="relative z-10">Save & Continue</span>
-                <span className="absolute inset-0 bg-white/20 dark:bg-white/10 transform -skew-x-12 translate-x-full group-hover:translate-x-0 transition-transform duration-700 ease-out"></span>
-                <span className="absolute top-0 left-0 w-20 h-full bg-white/10 transform -skew-x-12 -translate-x-32 group-hover:translate-x-[32rem] transition-transform duration-1000 ease-out"></span>
+                <span className="absolute inset-0 bg-white/20 dark:bg-white/10 transform -skew-x-12 translate-x-full group-hover:translate-x-0 transition-transform duration-700 ease-out" style={{ willChange: 'transform' }}></span>
+                <span className="absolute top-0 left-0 w-20 h-full bg-white/10 transform -skew-x-12 -translate-x-32 group-hover:translate-x-[32rem] transition-transform duration-1000 ease-out" style={{ willChange: 'transform' }}></span>
               </button>
             </div>
           </div>
@@ -265,4 +265,5 @@ const ExtraDetailsPg = () => {
   );
 };
 
-export default ExtraDetailsPg;
+// Export a memoized version of the component to prevent unnecessary re-renders
+export default React.memo(ExtraDetailsPg);
