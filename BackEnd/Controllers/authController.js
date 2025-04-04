@@ -1,4 +1,3 @@
-const dns = require('dns');
 const { sanitizeString, sanitizeCode, sanitizePassword } = require("../Extras/Sanitizers");
 const { Employer, Employee } = require("../Classes/User");
 const {
@@ -79,7 +78,7 @@ const logout = async (req, res) => {
 const registerEmployer =  async (req, res) => {
   console.log("Registration attempt, employer:", JSON.stringify(req.body));
   try {
-    const requiredFields = ["email", "password", "company_name"];
+    const requiredFields = ["email", "password", "company_name", "contact_phone", "country_code" ];
     const missingFields = requiredFields.filter((field) => !req.body[field]);
 
     if (missingFields.length > 0) {
@@ -89,11 +88,37 @@ const registerEmployer =  async (req, res) => {
       });
     }
 
+    let location = countryCodeMap[req.body.country_code];
+    if (!location){
+      return res.status(400).json({
+        status: "error",
+        errors: [`Country code/Location is incorrect.`],
+      });
+    }
+
+    let passwordResult = sanitizePassword(req.body.password);
+    if (passwordResult){
+      return res.status(400).json({
+        status: "error",
+        errors: ["password", passwordResult],
+      });
+    }
+
+    let codeResult = sanitizeCode(req.body.country_code)
+    if (!codeResult){
+      return res.status(400).json({
+        status: "error",
+        errors: ["Invalid Phone Code"],
+      });
+    }
+
     const newEmployer = new Employer(
       req.body.email.toLowerCase(),
-      sanitizePassword(req.body.password),
-      sanitizeString(req.body.company_name),
+      req.body.password,
       sanitizeString(req.body.contact_phone),
+      codeResult,
+      location,
+      sanitizeString(req.body.company_name),
       sanitizeString(req.body.company_description) // if it exists, it will have a change to be a null too.
     );
 
@@ -153,6 +178,12 @@ const registerEmployee = async (req, res) => {
     }
 
     let location = countryCodeMap[req.body.country_code];
+    if (!location){
+      return res.status(400).json({
+        status: "error",
+        errors: [`Country code/Location is incorrect.`],
+      });
+    }
     
     let passwordResult = sanitizePassword(req.body.password);
     if (passwordResult){
@@ -162,14 +193,20 @@ const registerEmployee = async (req, res) => {
       });
     }
 
-    console.log(parseInt(req.body.contact_phone))
+    let codeResult = sanitizeCode(req.body.country_code)
+    if (!codeResult){
+      return res.status(400).json({
+        status: "error",
+        errors: ["Invalid Phone Code"],
+      });
+    }
 
     const newEmployee = new Employee(
       req.body.email.toLowerCase(), 
       req.body.password,
       location,
-      parseInt(req.body.contact_phone),
-      sanitizeCode(req.body.country_code),
+      req.body.contact_phone,
+      codeResult,
       sanitizeString(req.body.first_name),
       sanitizeString(req.body.last_name),
       sanitizeString(req.body.professional_title),
@@ -206,7 +243,7 @@ const registerEmployee = async (req, res) => {
       status: "success",
     });
   } catch (error) {
-    console.error("Error registering employer:", error);
+    console.error("Error registering employee:", error);
     return res.status(500).json({
       status: "error",
       errors: [error.message || "Internal server error"],

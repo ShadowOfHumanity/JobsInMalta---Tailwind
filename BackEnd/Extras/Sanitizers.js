@@ -1,3 +1,5 @@
+const { countryCodeMap } = require("./CountryCodeMaps");
+
 let availableCodes = [356, 44, 49, 1, 39]
 
 function sanitizeString(str) { 
@@ -13,15 +15,8 @@ function sanitizeString(str) {
 }
 
 function sanitizeCode(code) {
-    if (code) {
-        let newCode = code.substring(1, code.length);
-       
-        newCode = parseInt(newCode);
-        for (let i = 0; i < availableCodes.length; i++) {
-            if (newCode === availableCodes[i]) {
-                return code;
-            }
-        }
+    if (countryCodeMap[code]) {
+        return code
     }
     return null; // erorr case
 }

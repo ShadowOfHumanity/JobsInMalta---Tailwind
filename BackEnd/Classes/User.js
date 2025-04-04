@@ -18,7 +18,7 @@ class User {
 }
 
 class Employer extends User {
-  constructor(email, password, company_name, company_description, location, contact_phone, country_code) {
+  constructor(email, password, contact_phone, country_code, location, company_name, company_description, ) {
     super(email, password, "employer", location, contact_phone, country_code);
     this.company_name = company_name;
     this.contact_phone = contact_phone;
