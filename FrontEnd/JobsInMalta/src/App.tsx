@@ -6,6 +6,7 @@ import LoginPg from "./Pages/LoginPg";
 import RegisterPg from "./Pages/RegisterPg";
 import { AuthProvider, useAuthSession } from "./Hooks/AuthContext";
 import ProfilePg from "./Pages/ProfilePg";
+import ExtraDetailsPg from "./Pages/ExtraDetailsPg";
 
 // Layout component that includes the navbar and footer
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -28,6 +29,7 @@ const LoginPage = () => <LoginPg />;
 const RegisterPage = () => <RegisterPg />;
 const EmployerDashboardPage = () => <div className="container mx-auto px-4 py-8">Employer Dashboard</div>;
 const ProfilePage = () => <ProfilePg />;
+const UserDetailsPage = () => <ExtraDetailsPg />;
 const NotFoundPage = () => (
   <div className="container mx-auto px-4 py-20 text-center">
     <h1 className="text-4xl font-bold text-primary mb-4">404 - Page Not Found</h1>
@@ -68,6 +70,7 @@ const App = () => {
           <Route path="/jobs/:id" element={<Layout><JobDetailsPage /></Layout>} />
           <Route path="/login" element={<Layout><LoginPage /></Layout>} />
           <Route path="/register" element={<Layout><RegisterPage /></Layout>} />
+          <Route path="/user-details" element={<Layout><UserDetailsPage /></Layout>} />
           <Route path="/employers" element={<Layout><div>Employers Page</div></Layout>} />
           <Route path="/find-talent" element={<Layout><div>Find Talent Page</div></Layout>} />
           <Route path="/faq" element={<Layout><div>FAQ Page</div></Layout>} />

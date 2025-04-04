@@ -338,6 +338,14 @@ LinkedIn: [Darian Baker](https://www.linkedin.com/in/darian-baker-1402b2327/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+<!-- TODOs and Future Improvements -->
+## TODOs and Future Improvements
+
+1. TODO: SEND DATA FROM USER-DETAILS PAGE TO SERVER
+   - Implement functionality to send form data from ExtraDetailsPg.tsx to the backend API
+   - Create appropriate endpoint on the server to handle and store profile details
+   - Add validation and error handling for the profile data submission
+
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/ShadowOfHumanity/JobsInMalta---Tailwind.svg?style=for-the-badge

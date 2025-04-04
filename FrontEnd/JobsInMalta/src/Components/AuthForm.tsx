@@ -77,7 +77,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
         // login after registration
         const loginResult = await login({email: formData.email, password: formData.password});
         if (loginResult) {
-          navigate("/");
+          navigate("/user-details")
         }
       }
     } else if (userType === "employer" && type === "register") {
@@ -92,7 +92,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
       if (result?.success) {
         const loginResult = await login({email: formData.email, password: formData.password});
         if (loginResult) {
-          navigate("post-job");
+          navigate("/user-details")
         }
       }
     } else if (type === "login") {

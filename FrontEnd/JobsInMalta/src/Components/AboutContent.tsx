@@ -1,8 +1,5 @@
-export interface Education {
-  degree:  string,
-  school : string,
-  year : string
-}
+import { Education } from "../types"
+
 
 // TRUE = ABOUT ME, FALSE = EDUCATION. YOU CAN CHANGE THIS TO STRING FOR MORE OPTIONS
 const AboutContent = ({ contentType, details }: { contentType: boolean, details: string | Education[] }) => {
