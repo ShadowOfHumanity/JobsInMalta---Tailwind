@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useMemo, memo } from 'react';
 
-// Enhanced color theme mapping with more vibrant colors
+// color theme with vibrant colors
 const themeColors = {
   default: {
     gradient: 'from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-850',
@@ -71,7 +71,7 @@ interface FadingQuestionProps {
   type?: string;
   position?: 'default' | 'left' | 'right';
   colorTheme?: 'default' | 'indigo' | 'emerald' | 'violet' | 'amber';
-  // New props for multi-input support
+
   isMultiInput?: boolean;
   multiInputFields?: MultiInputField[];
   multiValues?: Record<string, string>[];
@@ -79,7 +79,7 @@ interface FadingQuestionProps {
   onAddInput?: () => void;
   onRemoveInput?: (index: number) => void;
   showAddButton?: boolean;
-  // New props for enhanced education layout
+ 
   fullWidthDegree?: boolean; 
   twoRowLayout?: boolean;
 }
@@ -93,7 +93,7 @@ const FadingQuestion: React.FC<FadingQuestionProps> = ({
   type = 'text',
   position = 'default',
   colorTheme = 'default',
-  // Multi-input props with defaults
+
   isMultiInput = false,
   multiInputFields = [],
   multiValues = [],
@@ -114,7 +114,7 @@ const FadingQuestion: React.FC<FadingQuestionProps> = ({
   // Memoize theme colors to avoid recalculation
   const theme = useMemo(() => themeColors[colorTheme], [colorTheme]);
 
-  // Optimize handlers with useCallback
+
   const handleMouseEnter = useCallback(() => {
     setState(prev => ({ 
       ...prev, 
@@ -148,7 +148,7 @@ const FadingQuestion: React.FC<FadingQuestionProps> = ({
     setState(prev => ({ ...prev, focusedInputIndex: null }));
   }, []);
 
-  // Extract state values for readability
+
   const { isFocused, isHovered, hasInteracted, focusedInputIndex } = state;
 
   return (
@@ -158,7 +158,7 @@ const FadingQuestion: React.FC<FadingQuestionProps> = ({
         ${position === 'left' ? 'max-w-xl' : position === 'right' ? 'ml-auto max-w-xl' : 'w-full'}
       `}
     >
-      {/* Standard single input question */}
+      {/* Standard input question */}
       {!isMultiInput && (
         <div 
           className={`
@@ -180,7 +180,7 @@ const FadingQuestion: React.FC<FadingQuestionProps> = ({
             transform: `translateZ(0) ${isFocused ? 'scale(1.01)' : isHovered ? 'scale(1.005)' : 'scale(1)'} ${hasInteracted ? 'translateY(0)' : 'translateY(0.5rem)'}`,
           }}
         >
-          {/* Optimized decorative elements - reduced number of blur effects */}
+          
           <div className="absolute -top-2 -right-2 w-12 h-12 rounded-full bg-white/30 dark:bg-gray-700/30 -z-10 opacity-80"></div>
           <div className={`absolute -bottom-1 -left-1 w-8 h-8 rounded-full bg-gradient-to-br ${theme.gradient} -z-10 opacity-70`}></div>
           
@@ -200,7 +200,7 @@ const FadingQuestion: React.FC<FadingQuestionProps> = ({
             </div>
           </div>
 
-          {/* Optimized divider with simplified animation */}
+  
           <div className="relative h-px w-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
             <div 
               className={`absolute h-full bg-gradient-to-r from-transparent via-${colorTheme === 'default' ? 'primary' : colorTheme}-500 to-transparent dark:via-${colorTheme === 'default' ? 'primary-light' : colorTheme}-400`}
@@ -214,10 +214,10 @@ const FadingQuestion: React.FC<FadingQuestionProps> = ({
             ></div>
           </div>
 
-          {/* Input field with improved performance */}
+        
           <div className="mt-2">
             <div className="relative overflow-hidden rounded-md">
-              {/* Hardware-accelerated background effect when focused */}
+           
               {isFocused && (
                 <div 
                   className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent dark:via-white/5"
@@ -261,7 +261,7 @@ const FadingQuestion: React.FC<FadingQuestionProps> = ({
                 onBlur={handleBlur}
               />
               
-              {/* Optimized focus effect - reduced animation complexity */}
+          
               {isFocused && (
                 <div 
                   className={`absolute inset-0 rounded-md pointer-events-none ring-1 ${theme.ring}`}
@@ -272,7 +272,7 @@ const FadingQuestion: React.FC<FadingQuestionProps> = ({
                 ></div>
               )}
               
-              {/* Static highlight on hover instead of animated */}
+           
               {isHovered && !isFocused && (
                 <div 
                   className="absolute inset-0 rounded-md pointer-events-none ring-1 ring-gray-300 dark:ring-gray-600"
@@ -284,7 +284,7 @@ const FadingQuestion: React.FC<FadingQuestionProps> = ({
         </div>
       )}
 
-      {/* Multi-input question with performance optimizations */}
+  
       {isMultiInput && (
         <div>
           <div 
@@ -301,7 +301,7 @@ const FadingQuestion: React.FC<FadingQuestionProps> = ({
               transform: 'translateZ(0)'
             }}
           >
-            {/* Header with question */}
+           
             <div className="flex justify-between items-center mb-3">
               <div className="flex items-center gap-2">
                 <svg
@@ -317,7 +317,7 @@ const FadingQuestion: React.FC<FadingQuestionProps> = ({
               </div>
             </div>
 
-            {/* Performance-optimized education fields */}
+        
             {multiValues.map((itemValues, index) => (
               <div 
                 key={index} 
@@ -332,7 +332,7 @@ const FadingQuestion: React.FC<FadingQuestionProps> = ({
                     Education #{index + 1}
                   </span>
                   
-                  {/* Remove button - optimized */}
+                
                   {multiValues.length > 1 && (
                     <button 
                       type="button"
@@ -346,9 +346,9 @@ const FadingQuestion: React.FC<FadingQuestionProps> = ({
                   )}
                 </div>
                 
-                {/* Optimized layout for education fields */}
+        
                 <div className="space-y-4">
-                  {/* Row 1: Degree (full width) - optimized */}
+                  
                   {twoRowLayout && (
                     <div className="w-full">
                       {multiInputFields.filter(field => field.key === 'degree').map((field) => (
@@ -377,7 +377,7 @@ const FadingQuestion: React.FC<FadingQuestionProps> = ({
                     </div>
                   )}
                   
-                  {/* Rest of the education fields - optimized rendering */}
+                  
                   <div className="w-full">
                     {multiInputFields
                       .filter(field => field.key === 'school')
@@ -408,7 +408,7 @@ const FadingQuestion: React.FC<FadingQuestionProps> = ({
                   
                   <div className="grid grid-cols-2 gap-3">
                     {multiInputFields
-                      .filter(field => field.key === 'yearStarted' || field.key === 'year')
+                      .filter(field => field.key === 'year_started' || field.key === 'year')
                       .map((field) => (
                         <div key={field.key} className="relative">
                           <label 

@@ -85,7 +85,7 @@ const ExtraDetailsPg = () => {
       placeholder: 'e.g. University of Malta' 
     },
     { 
-      key: 'yearStarted', 
+      key: 'year_started', 
       label: 'Year Started', 
       placeholder: 'e.g. 2016', 
       type: 'text' 
@@ -170,7 +170,7 @@ const ExtraDetailsPg = () => {
                     <FadingQuestion
                       question="What is your current job title?"
                       placeholder="e.g. Software Developer, Project Manager"
-                      name="jobTitle"
+                      name="job_title"
                       value={formData.job_title}
                       onChange={handleChange}
                       position="default"
@@ -206,7 +206,7 @@ const ExtraDetailsPg = () => {
                     multiValues={formData.education.map(edu => ({
                       degree: edu.degree || '',
                       school: edu.school || '',
-                      yearStarted: edu.year_started || '',
+                      year_started: edu.year_started || '',
                       year: edu.year || ''
                     }))}
                     onMultiInputChange={handleEducationChange}

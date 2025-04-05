@@ -1,5 +1,5 @@
 const express = require('express');
-const { getProfileInfo } = require('../Controllers/userController');
+const { getProfileInfo, editProfileInfo } = require('../Controllers/userController');
 
 const router = express.Router();
 
@@ -8,7 +8,7 @@ router.get(
     getProfileInfo
 )
 
-router.put(
+router.post(
     '/updateProfileInfo',
     editProfileInfo
 )

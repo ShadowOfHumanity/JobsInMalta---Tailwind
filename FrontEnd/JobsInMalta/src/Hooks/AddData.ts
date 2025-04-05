@@ -19,7 +19,6 @@ const addData = <TRequest, TResponse>(endpoint: string) => {
   const postData = async (newData: TRequest): Promise<ApiResponse<TResponse> | null> => {
     // Abort older request if exists
     controllerRef.current?.abort();
-    // Create new controller
     controllerRef.current = new AbortController();
 
     setIsLoading(true);

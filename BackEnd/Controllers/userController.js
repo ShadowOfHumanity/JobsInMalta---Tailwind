@@ -1,4 +1,4 @@
-const { getEmployeeData, getEmployerData } = require("../db/USER_DB");
+const { getEmployeeData, getEmployerData, editEmployeeInfo } = require("../db/USER_DB");
 
 
 const getProfileInfo = async (req, res) => {
@@ -35,12 +35,24 @@ const editProfileInfo = async (req, res) => {
   if (req.session && req.session.user_id) {
     if (req.session.role === "employee") {
       let employeeObject = {
-        job_title: req.body.job_title,
-        education: req.body.education,
+        professional_title: req.body.job_title,
         linkedIn_url: req.body.linkedIn_url,
         portfolio_url: req.body.portfolio_url,
       }
-      // (do somethuing database with employeeObject)
+      let educationArray = req.body.education
+      let result = editEmployeeInfo(employeeObject, educationArray, req.session.user_id)
+      if ((await result).success) {
+        return res.status(200).json({
+          success: true,
+          message: "User info updated successfully",
+        });
+      } else {
+        return res.status(500).json({
+          success: false,
+          message: "Error updating user info",
+        });
+      }
+      
     } else if (req.session.role === "employer") {
       let employerObject = {
         company_description: req.body.company_description,
@@ -65,4 +77,5 @@ const editProfileInfo = async (req, res) => {
 
 module.exports = {
   getProfileInfo,
+  editProfileInfo,
 };
