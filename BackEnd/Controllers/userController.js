@@ -31,6 +31,28 @@ const getProfileInfo = async (req, res) => {
   }
 };
 
+const editProfileInfo = async (req, res) => {
+  if (req.session && req.session.user_id) {
+    if (req.session.role === "employee") {
+      let employeeObject = {
+        job_title: req.body.job_title,
+        education: req.body.education,
+        linkedIn_url: req.body.linkedIn_url,
+        portfolio_url: req.body.portfolio_url,
+      }
+      // (do somethuing database with employeeObject)
+    } else if (req.session.role === "employer") {
+      let employerObject = {
+        company_description: req.body.company_description,
+        industry: req.body.industry,
+        website_url: req.body.website_url,
+        company_size: req.body.company_size
+      }
+      // (do somethuing database with employerObject)
+    }
+  }
+}
+
 module.exports = {
   getProfileInfo,
 };

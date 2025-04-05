@@ -8,4 +8,9 @@ router.get(
     getProfileInfo
 )
 
+router.put(
+    '/updateProfileInfo',
+    editProfileInfo
+)
+
 module.exports = router

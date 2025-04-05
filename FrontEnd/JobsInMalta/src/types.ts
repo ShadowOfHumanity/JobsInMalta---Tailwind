@@ -9,5 +9,5 @@ export interface Education {
     degree: string;
     school: string;
     year: string; 
-    yearStarted: string;
+    year_started: string;
 }
