@@ -49,7 +49,17 @@ const editProfileInfo = async (req, res) => {
         company_size: req.body.company_size
       }
       // (do somethuing database with employerObject)
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: "hey... how did you get here?",
+      });
     }
+  } else {
+    return res.status(401).json({
+      success: false,
+      message: "User not logged in",
+    });
   }
 }
 

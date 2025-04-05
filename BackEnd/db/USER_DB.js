@@ -136,6 +136,14 @@ async function insertEmployee(newEmployee) {
     }
 }
 
+async function editEmployee(EmployeeExtras, id){
+
+}
+
+async function editEmployer(EmployerExtras, id){
+    
+}
+
 async function LogInUser(email, password){
     const client = await pool.connect();
     try{
